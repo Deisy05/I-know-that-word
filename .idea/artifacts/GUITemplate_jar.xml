@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="GUITemplate:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/GUITemplate_jar</output-path>
+    <root id="archive" name="GUITemplate.jar">
+      <element id="module-output" name="I know that word" />
+    </root>
+  </artifact>
+</component>
