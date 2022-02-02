@@ -4,9 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * This class is used for ...
- * @autor Paola-J Rodriguez-C paola.rodriguez@correounivalle.edu.co
- * @version v.1.0.0 date:21/11/2021
+ * @author Deisy Catalina Melo - deisy.melo@correounivalle.edu.co
+ *         Carlos Andrés Borja - borja.carlos@correounivalle.edu.co
+ * @version @version v.1.0.0 date: 02/02/2022
  */
 public class GUI extends JFrame {
 
@@ -44,7 +44,7 @@ public class GUI extends JFrame {
     /**
      * Main process of the Java program
      * @param args Object used in order to send input data from command line when
-     *             the program is execute by console.
+     *             the program is executed by console.
      */
     public static void main(String[] args){
         EventQueue.invokeLater(() -> {
