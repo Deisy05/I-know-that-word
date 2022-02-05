@@ -18,7 +18,7 @@ public class FileManager {
         String texto="";
 
         try {
-            fileReader = new FileReader("src/myProject/files/diccionario.txt");
+            fileReader = new FileReader("src/myProject/files/bancoDePalabras.txt");
             input = new BufferedReader(fileReader);
             String line = input.readLine();
             while(line!=null){
@@ -42,7 +42,7 @@ public class FileManager {
 
     public void escribirTexto(String linea){
         try {
-            fileWriter = new FileWriter("src/myProject/files/diccionario.txt",true);
+            fileWriter = new FileWriter("src/myProject/files/bancoDePalabras.txt",true);
             output = new BufferedWriter(fileWriter);
             output.write(linea);
             output.newLine();
