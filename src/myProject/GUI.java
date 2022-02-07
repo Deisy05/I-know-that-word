@@ -19,16 +19,16 @@ public class GUI extends JFrame {
     private Escucha escucha;
 
     //Información en el botón de ayuda, en el panel de inicio: cuando se pide el user
-    private static final String INFO1 = " El nombre usuario es importante para guardar la partida."
-            +"\n Si se confirma que has jugado anteriormente se retomará el nivel al que llegaste";
+    private static final String INFO1 = " El nombre usuario es importante para guardar la partida. "
+            +"\n Si se confirma que has jugado anteriormente se retomará el nivel al que llegaste. ";
     //Información en el botón de ayuda, en el panel del juego.
     private static final String INFO2 = " Puedes salir en cualquier momento.\n"
-            + "Sin embargo, si la partida no ha terminado la próxima vez que ingreses se iniciará la misma";
+            + "Sin embargo, si la partida no ha terminado la próxima vez que ingreses se iniciará la misma. ";
 
     private JPanel panelInicio, panelGame,panelBotones;
     private JTextField entradaUsuario;
     private JButton botonOK, botonHelp, botonExit, botonIniciar, botonInstrucciones, botonSi, botonNo, botonContinuar;
-    private JLabel labelUsername, labelNivel, labelTiempo, labelPalabra;
+    private JLabel labelUsername, labelInstrucciones, labelNivel, labelTiempo, labelPalabra;
     private ImageIcon  image;
     private boolean opcionHelp;
     private String nombreJugador;
@@ -65,8 +65,8 @@ public class GUI extends JFrame {
         escucha = new Escucha();
         model = new Model();
         //Set up JComponents
-        ui= new UIManager();
-        ui.put("OptionPane.background",new ColorUIResource(203,39,106));
+        //ui= new UIManager();
+        //ui.put("OptionPane.background",new ColorUIResource(203,39,106));
 
         opcionHelp=false; //Se usa para saber qué mensaje en el botón de ayuda se debe mostrar
         //Encabezado del frame
@@ -132,7 +132,6 @@ public class GUI extends JFrame {
         labelUsername= new JLabel();
         image=  new ImageIcon(getClass().getResource("/myProject/recursos/username.png"));
         labelUsername.setIcon(new ImageIcon(image.getImage().getScaledInstance(200,50, Image.SCALE_SMOOTH)));
-        labelUsername.setBackground(Color.PINK);
         constra.gridx=0;
         constra.gridy=0;
         constra.gridwidth=2;
@@ -142,7 +141,7 @@ public class GUI extends JFrame {
         //Cajón de entrada del texto
         entradaUsuario= new JTextField();
         entradaUsuario.setPreferredSize(new Dimension(250,40));
-        entradaUsuario.setFont(new Font("Arial ",Font.PLAIN,36));
+        entradaUsuario.setFont(new Font("Arial ",Font.PLAIN,30));
         constra.gridx=0;
         constra.gridy=1;
         constra.gridwidth=1;
@@ -196,6 +195,7 @@ public class GUI extends JFrame {
         constraints.anchor= GridBagConstraints.CENTER;
         this.add(panelGame,constraints);
         crearPanelBotones();
+        crearComponentesPanelGame(nombreJugador);
 
         revalidate();
         repaint();
@@ -204,9 +204,9 @@ public class GUI extends JFrame {
 
     /**
      * Este método crea el panel en que se ubican los botones del juego.
-     * Además, crea los botones del juego:
-     * Instrucciones
-     * IniciarPartida
+     * Además, crea los componentes:
+     * Botón de Instrucciones
+     * Botón de Iniciar Partida
      */
 
     public void crearPanelBotones(){
@@ -242,6 +242,11 @@ public class GUI extends JFrame {
 
     }
 
+    public void crearComponentesPanelGame(String nombreU){
+        //labelNivel
+        //labelTime,
+    }
+
 
 
 
@@ -265,6 +270,8 @@ public class GUI extends JFrame {
         @Override
         public void mouseClicked(MouseEvent e) {
            if(e.getSource()==botonExit){
+               //model.confirmarNivel();
+               model.guardarRegistro();
                System.exit(0);
            }
             if(e.getSource()==botonHelp) {
@@ -277,11 +284,24 @@ public class GUI extends JFrame {
             }
             if(e.getSource()==botonOK){
                 //confirmarNivel();
-                opcionHelp=true;
-                remove(panelInicio);
-                revalidate();
-                repaint();
-                crearInicioJuego();
+                if(!entradaUsuario.getText().isEmpty()){
+                    nombreJugador=entradaUsuario.getText();
+                    model.registrar(nombreJugador,0); //para la prueba, se debe configurar bien
+                    opcionHelp=true;
+                    remove(panelInicio);
+                    revalidate();
+                    repaint();
+                    crearInicioJuego();
+                }else{JOptionPane.showMessageDialog(null,"Debes ingresar el nombre de usuario");}
+
+            }
+            if(e.getSource()==botonInstrucciones){
+                labelInstrucciones= new JLabel();
+                image= new ImageIcon(getClass().getResource("/myProject/recursos/instrucciones.png"));
+                labelInstrucciones.setIcon(new ImageIcon(image.getImage().getScaledInstance(500,450,
+                        Image.SCALE_SMOOTH)));
+                JOptionPane.showMessageDialog(null,labelInstrucciones,null,JOptionPane.PLAIN_MESSAGE);
+
             }
 
 
