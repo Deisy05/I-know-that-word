@@ -50,10 +50,6 @@ public class Model {
 
 
 
-
-
-
-
     /**
      * Este método registra el jugador:
      * Si la lista de usuarios está vacía significa que el usuario es nuevo.
