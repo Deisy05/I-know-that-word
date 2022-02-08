@@ -19,7 +19,7 @@ public class Model {
     private ArrayList <String> palabrasAMostrar;
     private String auxPalabraC, auxPalabraI;
     private int nivelUsuario;
-    private boolean flag;
+    private boolean flag, auxExisteUsuario;
 
     /**
      * Constructor of class
@@ -34,6 +34,7 @@ public class Model {
         palabrasIncorrectas = new ArrayList<String>();
         palabrasAMostrar= new ArrayList<String>();
         flag=false;
+        auxExisteUsuario=false;
 
     }
 
@@ -51,8 +52,10 @@ public class Model {
 
     public void registrar(String nombreJugador,int nivel) {
         boolean presente=false;
-        if (!usuarioList.isEmpty()) {
-            for (User aux : usuarioList) {
+        if (!usuarioList.isEmpty())
+        {
+            for (User aux : usuarioList)
+            {
                 if (aux.getNombre() == nombreJugador) {
                     usuarioList.get(usuarioList.indexOf(aux)).setNivelDelJugador(nivel);
                     presente = true;
@@ -84,7 +87,7 @@ public class Model {
                     nivel= usuarioList.get(usuarioList.indexOf(auxi)).getNivelDelJugador();
 
                 }
-           }
+            }
         }
         return nivel;
     }
@@ -128,7 +131,7 @@ public class Model {
         auxPalabraI=word.generarPalabra();
 
         for (String wordC: palabrasCorrectas){
-            if(auxPalabraI==wordC){ agregarPalabraIncorrecta(); }
+            if(auxPalabraI == wordC){ agregarPalabraIncorrecta(); }
         }
         //cuando sea una palabra diferente a las que ya están en palabrasCorrectas, ejecuta este bloque
         if(!palabrasIncorrectas.isEmpty()){
@@ -156,13 +159,13 @@ public class Model {
      */
 
 
-//este método registra al usuario en el archivo .txt cuando se cierra el juego
+    //este método registra al usuario en el archivo .txt cuando se cierra el juego
     public void guardarRegistro(){
 
         try{
             User aux;
             for (int i=0; i< usuarioList.size(); i++){
-                aux= usuarioList.get(i);
+                aux = usuarioList.get(i);
                 aux.guardar();
             }
         }catch (Exception exception) {
@@ -170,4 +173,42 @@ public class Model {
         }
     }
 
+    public boolean buscarElUsuario(String userName) {
+
+        for (User value : usuarioList) {
+            if (value.getNombre().equals(userName)) {
+                nivelUsuario = value.getNivelDelJugador();
+                auxExisteUsuario = true;
+                System.out.println("jugador: "+userName+" existe: "+auxExisteUsuario+"enNivel: "+nivelUsuario);
+            } else {
+                nivelUsuario = 0;
+                auxExisteUsuario = false;
+            }
+        }
+        return auxExisteUsuario;
+    }
+
+    public void jugar() {
+        //create a switch sentence
+        switch (nivelUsuario) {
+            case 1:
+                
+                break;
+            case 2:
+                
+                break;
+            case 3:
+                
+                break;
+            case 4:
+                
+                break;
+            case 5:
+                
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + nivelUsuario);
+        }
+               
+    }
 }

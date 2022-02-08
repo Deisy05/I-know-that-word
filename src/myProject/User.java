@@ -28,6 +28,7 @@ public class User {
     public int getNivelDelJugador(){ return nivel; }
 
     public void setNivelDelJugador(int nivelJugador){
+
         nivel=nivelJugador;
     }
 

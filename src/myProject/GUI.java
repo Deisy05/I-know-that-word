@@ -5,6 +5,7 @@ import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Objects;
 
 
 /**
@@ -30,7 +31,7 @@ public class GUI extends JFrame {
     private JButton botonOK, botonHelp, botonExit, botonIniciar, botonInstrucciones, botonSi, botonNo, botonContinuar;
     private JLabel labelUsername, labelInstrucciones, labelNivel, labelTiempo, labelPalabra;
     private ImageIcon  image;
-    private boolean opcionHelp;
+    private boolean opcionHelp, jugadorExiste;
     private String nombreJugador;
 
     private UIManager ui;
@@ -60,7 +61,7 @@ public class GUI extends JFrame {
 
         //Set up JFrame Container's Layout
         this.setLayout(new GridBagLayout());
-        constraints= new GridBagConstraints();//GridBagConstraints constraints= new GridBagConstraints();
+        constraints = new GridBagConstraints();//GridBagConstraints constraints= new GridBagConstraints();
         //Create Listener Object or Control Object
         escucha = new Escucha();
         model = new Model();
@@ -80,7 +81,7 @@ public class GUI extends JFrame {
         botonHelp = new JButton();
         botonHelp.addMouseListener(escucha);
         botonHelp.setPreferredSize(new Dimension(80,50));
-        image = new ImageIcon(getClass().getResource("/myProject/recursos/help1.png"));
+        image = new ImageIcon(Objects.requireNonNull(getClass().getResource("/myProject/recursos/help1.png")));
         botonHelp.setIcon(new ImageIcon(image.getImage().getScaledInstance(80,50, Image.SCALE_SMOOTH)));
         botonHelp.setBorderPainted(false);
         botonHelp.setContentAreaFilled(false);
@@ -93,7 +94,7 @@ public class GUI extends JFrame {
 
         botonExit = new JButton();
         botonExit.addMouseListener(escucha);
-        image = new ImageIcon(getClass().getResource("/myProject/recursos/close1.png"));
+        image = new ImageIcon(Objects.requireNonNull(getClass().getResource("/myProject/recursos/close1.png")));
         botonExit.setPreferredSize(new Dimension(80,50));
         botonExit.setIcon(new ImageIcon(image.getImage().getScaledInstance(80,50, Image.SCALE_SMOOTH)));
         botonExit.setBorderPainted(false);
@@ -130,7 +131,7 @@ public class GUI extends JFrame {
         GridBagConstraints constra = new GridBagConstraints(); //Componente del layout
         //etiqueta
         labelUsername= new JLabel();
-        image=  new ImageIcon(getClass().getResource("/myProject/recursos/username.png"));
+        image=  new ImageIcon(Objects.requireNonNull(getClass().getResource("/myProject/recursos/username.png")));
         labelUsername.setIcon(new ImageIcon(image.getImage().getScaledInstance(200,50, Image.SCALE_SMOOTH)));
         constra.gridx=0;
         constra.gridy=0;
@@ -152,7 +153,7 @@ public class GUI extends JFrame {
         botonOK= new JButton();
         botonOK.addMouseListener(escucha);
         botonOK.setPreferredSize(new Dimension(57,57));
-        image = new ImageIcon(getClass().getResource("/myProject/recursos/okB.png"));
+        image = new ImageIcon(Objects.requireNonNull(getClass().getResource("/myProject/recursos/okB.png")));
         botonOK.setIcon(new ImageIcon(image.getImage().getScaledInstance(57,57, Image.SCALE_SMOOTH)));
         botonOK.setBorderPainted(false);
         botonOK.setContentAreaFilled(false);
@@ -166,14 +167,14 @@ public class GUI extends JFrame {
     }
 
     /**
-     * Esta clase crea el ícono del mensaje emergente del boton de ayuda
+     * Este método retorna un objeto de tipo Icon y es el que crea el ícono del mensaje emergente del boton de ayuda
      * @param reference es la ubicacion de la imagen
      * @param width  medida del ancho que se desea que tenga el icono
      * @param height  medida del alto  que se desea que tenga el icono
      * */
 
     public Icon iconoMessage (String reference,int width,int height){
-        image = new ImageIcon(getClass().getResource(reference));
+        image = new ImageIcon(Objects.requireNonNull(getClass().getResource(reference)));
         image= new ImageIcon(image.getImage().getScaledInstance(width,height,Image.SCALE_SMOOTH));
         return image;
     }
@@ -224,7 +225,7 @@ public class GUI extends JFrame {
         botonInstrucciones= new JButton();
         botonInstrucciones.addMouseListener(escucha);
         botonInstrucciones.setPreferredSize(new Dimension(200,65));
-        image = new ImageIcon(getClass().getResource("/myProject/recursos/instruB.png"));
+        image = new ImageIcon(Objects.requireNonNull(getClass().getResource("/myProject/recursos/instruB.png")));
         botonInstrucciones.setIcon(new ImageIcon(image.getImage().getScaledInstance(200,65, Image.SCALE_SMOOTH)));
         botonInstrucciones.setBorderPainted(false);
         botonInstrucciones.setContentAreaFilled(false);
@@ -233,7 +234,7 @@ public class GUI extends JFrame {
         botonIniciar= new JButton();
         botonIniciar.addMouseListener(escucha);
         botonIniciar.setPreferredSize(new Dimension(200,65));
-        image = new ImageIcon(getClass().getResource("/myProject/recursos/playB.png"));
+        image = new ImageIcon(Objects.requireNonNull(getClass().getResource("/myProject/recursos/playB.png")));
         botonIniciar.setIcon(new ImageIcon(image.getImage().getScaledInstance(200,65, Image.SCALE_SMOOTH)));
         botonIniciar.setBorderPainted(false);
         botonIniciar.setContentAreaFilled(false);
@@ -269,35 +270,52 @@ public class GUI extends JFrame {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-           if(e.getSource()==botonExit){
-               //model.confirmarNivel();
-               model.guardarRegistro();
-               System.exit(0);
-           }
-            if(e.getSource()==botonHelp) {
-              if(!opcionHelp){
-                  JOptionPane.showMessageDialog(null,INFO1,"USERNAME",JOptionPane.PLAIN_MESSAGE,iconoMessage(
-                          "/myProject/recursos/imageUser.png",50,50));
-              }else{
-                  JOptionPane.showMessageDialog(null,INFO2,null,JOptionPane.INFORMATION_MESSAGE);
-              }
+            if(e.getSource()==botonExit)
+            {
+                //model.confirmarNivel();
+                model.guardarRegistro();
+                System.exit(0);
             }
-            if(e.getSource()==botonOK){
+            if(e.getSource()==botonHelp)
+            {
+                if(!opcionHelp){
+                    JOptionPane.showMessageDialog(null,INFO1,"USERNAME",JOptionPane.PLAIN_MESSAGE,iconoMessage(
+                            "/myProject/recursos/imageUser.png",50,50));
+                }else{
+                    JOptionPane.showMessageDialog(null,INFO2,null,JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+            if(e.getSource()==botonOK)
+            {
                 //confirmarNivel();
-                if(!entradaUsuario.getText().isEmpty()){
+                if(!entradaUsuario.getText().isEmpty())
+                {
                     nombreJugador=entradaUsuario.getText();
-                    model.registrar(nombreJugador,0); //para la prueba, se debe configurar bien
+                    if(model.buscarElUsuario(nombreJugador))
+                    {
+                        model.jugar();
+                    }else{
+                        model.registrar(nombreJugador,0);
+                        model.jugar();
+                    }
+
+
+                    //model.registrar(nombreJugador,0); //para la prueba, se debe configurar bien
                     opcionHelp=true;
                     remove(panelInicio);
                     revalidate();
                     repaint();
                     crearInicioJuego();
-                }else{JOptionPane.showMessageDialog(null,"Debes ingresar el nombre de usuario");}
+                }else
+                {
+                    JOptionPane.showMessageDialog(null,"Debes ingresar el nombre de usuario","Username is required",JOptionPane.ERROR_MESSAGE);
+                }
 
             }
-            if(e.getSource()==botonInstrucciones){
+            if(e.getSource()==botonInstrucciones)
+            {
                 labelInstrucciones= new JLabel();
-                image= new ImageIcon(getClass().getResource("/myProject/recursos/instrucciones.png"));
+                image= new ImageIcon(Objects.requireNonNull(getClass().getResource("/myProject/recursos/instrucciones.png")));
                 labelInstrucciones.setIcon(new ImageIcon(image.getImage().getScaledInstance(500,450,
                         Image.SCALE_SMOOTH)));
                 JOptionPane.showMessageDialog(null,labelInstrucciones,null,JOptionPane.PLAIN_MESSAGE);
