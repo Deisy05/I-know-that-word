@@ -13,12 +13,12 @@ public class Model {
     private Word word;
     private User user;
 
-    FileManager fileManager= new FileManager();
+    FileManager fileManager = new FileManager();
 
-    private ArrayList <User> usuarioList= new ArrayList<User>(); //los usuarios registrados
-    private ArrayList <String> palabrasCorrectas;
-    private ArrayList <String> palabrasIncorrectas;
-    private ArrayList <String> palabrasAMostrar;
+    private ArrayList<User> usuarioList = new ArrayList<User>(); //los usuarios registrados
+    private ArrayList<String> palabrasCorrectas;
+    private ArrayList<String> palabrasIncorrectas;
+    private ArrayList<String> palabrasAMostrar;
     private String auxPalabraC, auxPalabraI;
     private int nivelUsuario;
     private boolean flag;
@@ -27,27 +27,28 @@ public class Model {
      * Constructor of class
      */
 
-    public  Model(){
+    public Model() {
 
-        usuarioList= fileManager.lecturaUserFile();
+        usuarioList = fileManager.lecturaUserFile();
         palabrasCorrectas = new ArrayList<String>();
         palabrasIncorrectas = new ArrayList<String>();
-        palabrasAMostrar= new ArrayList<String>();
-        flag=false;
+        palabrasAMostrar = new ArrayList<String>();
+        flag = false;
+
 
     }
 
-    public void mostrarUsuarios(){
-        if(usuarioList.isEmpty()){
+    public void mostrarUsuarios() {
+        user.setNivelDelJugador(2);
+        if (usuarioList.isEmpty()) {
             System.out.println("no hay usuarios aun");
-        }else{
-            for(User aux: usuarioList){
-                System.out.println("usuario: "+ aux.getNombre() + "\n nivel: "+ aux.getNivelDelJugador());
+        } else {
+            for (User aux : usuarioList) {
+                System.out.println("usuario: " + aux.getNombre() + "\n nivel: " + aux.getNivelDelJugador());
             }
         }
+
     }
-
-
 
 
     /**
@@ -55,12 +56,13 @@ public class Model {
      * Si la lista de usuarios está vacía significa que el usuario es nuevo.
      * Si la lista no está vacía se debe buscar el usuario en ella, si no está significa que el usuario es nuevo.
      * Si el usuario si está en la lista entonces simplemente se le modifica el nuevo nivel.
+     *
      * @param nombreJugador
      * @param nivel
      */
 
-    public void registrar(String nombreJugador,int nivel) {
-        boolean presente=false;
+    public void registrar(String nombreJugador, int nivel) {
+        boolean presente = false;
         if (!usuarioList.isEmpty()) {
             for (User aux : usuarioList) {
                 if (aux.getNombre() == nombreJugador) {
@@ -69,10 +71,27 @@ public class Model {
                 }
             }
         }
-        if(usuarioList.isEmpty() || !presente){
+        if (usuarioList.isEmpty() || !presente) {
             usuarioList.add(new User(nombreJugador, nivel));
         }
     }
+
+    /**
+     * Este método restringe la entra de datos en el Jtexfield a solo carácteres sin signos especiales
+     */
+    public boolean validarEntradaTexto(String entrada) {
+        boolean valido = true;
+        int ascii = 0;
+        for (char aux : entrada.toCharArray()) {
+            ascii = (int) aux;
+            if (ascii < 97 || ascii > 122) {
+                valido = false;
+                break;
+            }
+        }
+        return valido;
+    }
+
 
     /**
      * Este método retorna el nivel del jugar:
@@ -80,32 +99,25 @@ public class Model {
      * Si la lista no está vacía se debe buscar el usuario en ella, si no está significa que el usuario es nuevo, su
      * nivel será 0.
      * Si el usuario si está en la lista entonces simplemente se obtiene el nivel guardado.
+     *
      * @param nombreJugador
      * @return nivel del jugador.
      */
 
 //este método se usa para poder iniciar el juego desde el ultimo nivel jugado
-    public int nivelDelJugador (String nombreJugador){
+    public int nivelDelJugador(String nombreJugador) {
         int nivel = 0;
 
-        if (!usuarioList.isEmpty()){
-            for(User auxi: usuarioList){
-                if(auxi.getNombre()==nombreJugador){
-                    nivel= usuarioList.get(usuarioList.indexOf(auxi)).getNivelDelJugador();
+        if (!usuarioList.isEmpty()) {
+            for (User auxi : usuarioList) {
+                if (auxi.getNombre() == nombreJugador) {
+                    nivel = usuarioList.get(usuarioList.indexOf(auxi)).getNivelDelJugador();
 
                 }
-           }
+            }
         }
         return nivel;
     }
-
-
-
-
-
-
-
-
 
 
     /**
@@ -113,20 +125,21 @@ public class Model {
      * verifica que la palabra no se encuentre en el arrayList para lograr agregarla.
      */
 
-    public void agregarPalabraCorrecta(){
-        auxPalabraC=word.generarPalabra();
-        if(!palabrasCorrectas.isEmpty()){
-            for(String word: palabrasCorrectas){
-                if(word==auxPalabraC){ agregarPalabraCorrecta(); }
+    public void agregarPalabraCorrecta() {
+        auxPalabraC = word.generarPalabra();
+        if (!palabrasCorrectas.isEmpty()) {
+            for (String word : palabrasCorrectas) {
+                if (word == auxPalabraC) {
+                    agregarPalabraCorrecta();
+                }
             }
-            flag=true; //La palabra no se encuentra en la lista de palabrasCorrectas por tanto se puede agregar.
+            flag = true; //La palabra no se encuentra en la lista de palabrasCorrectas por tanto se puede agregar.
         }
-        if(palabrasCorrectas.isEmpty()|| flag){
+        if (palabrasCorrectas.isEmpty() || flag) {
             palabrasCorrectas.add(auxPalabraC);
-            flag=false;
+            flag = false;
         }
     }
-
 
 
     /**
@@ -136,50 +149,39 @@ public class Model {
      * una vez verificadas estas dos condiciones la agrega al arraylist 'palabrasIncorrectas'
      */
 
-    public void agregarPalabraIncorrecta(){
-        auxPalabraI=word.generarPalabra();
+    public void agregarPalabraIncorrecta() {
+        auxPalabraI = word.generarPalabra();
 
-        for (String wordC: palabrasCorrectas){
-            if(auxPalabraI==wordC){ agregarPalabraIncorrecta(); }
+        for (String wordC : palabrasCorrectas) {
+            if (auxPalabraI == wordC) {
+                agregarPalabraIncorrecta();
+            }
         }
         //cuando sea una palabra diferente a las que ya están en palabrasCorrectas, ejecuta este bloque
-        if(!palabrasIncorrectas.isEmpty()){
-            for(String wordInc: palabrasIncorrectas){
-                if(wordInc==auxPalabraC){ agregarPalabraIncorrecta(); }
+        if (!palabrasIncorrectas.isEmpty()) {
+            for (String wordInc : palabrasIncorrectas) {
+                if (wordInc == auxPalabraC) {
+                    agregarPalabraIncorrecta();
+                }
             }
-            flag=true; //La palabra no se encuentra en la lista de palabrasIncorrectas por tanto se puede agregar.
+            flag = true; //La palabra no se encuentra en la lista de palabrasIncorrectas por tanto se puede agregar.
         }
-        if(palabrasIncorrectas.isEmpty()|| flag){
+        if (palabrasIncorrectas.isEmpty() || flag) {
             palabrasIncorrectas.add(auxPalabraC);
-            flag=false;
+            flag = false;
         }
     }
-
-
-
-
-
-
-
 
 
     /**
      * Este método guarda el usuario en usuariosListados.txt
      */
 
-
 //este método registra al usuario en el archivo .txt cuando se cierra el juego
-    public void guardarRegistro(){
-
-        try{
-            User aux;
-            for (int i=0; i< usuarioList.size(); i++){
-                aux= usuarioList.get(i);
-                aux.guardar();
-            }
-        }catch (Exception exception) {
-            exception.printStackTrace();
+    public void guardarRegistro() {
+        if (!usuarioList.isEmpty()) {
+            User aux = usuarioList.get(usuarioList.size() - 1);
+            aux.guardar();
         }
     }
-
 }

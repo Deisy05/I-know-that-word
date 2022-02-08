@@ -270,7 +270,6 @@ public class GUI extends JFrame {
         @Override
         public void mouseClicked(MouseEvent e) {
            if(e.getSource()==botonExit){
-               //model.confirmarNivel();
                model.guardarRegistro();
                System.exit(0);
            }
@@ -286,12 +285,20 @@ public class GUI extends JFrame {
                 //confirmarNivel();
                 if(!entradaUsuario.getText().isEmpty()){
                     nombreJugador=entradaUsuario.getText();
-                    model.registrar(nombreJugador,0); //para la prueba, se debe configurar bien
-                    opcionHelp=true;
-                    remove(panelInicio);
-                    revalidate();
-                    repaint();
-                    crearInicioJuego();
+                    //validar que no tenga caracteres especiales
+                    if( model.validarEntradaTexto(nombreJugador)){
+                        model.registrar(nombreJugador,0); //para la prueba, se debe configurar bien
+
+                        opcionHelp=true;
+                        remove(panelInicio);
+                        revalidate();
+                        repaint();
+                        crearInicioJuego();
+                    } else{
+                        JOptionPane.showMessageDialog(null,"No se aceptan caracteres especiales\n Intenta ingresar " +
+                                "solo letras");
+                    }
+
                 }else{JOptionPane.showMessageDialog(null,"Debes ingresar el nombre de usuario");}
 
             }
@@ -305,6 +312,7 @@ public class GUI extends JFrame {
             }
             if (e.getSource()== botonIniciar){
                 model.mostrarUsuarios();
+
             }
 
 

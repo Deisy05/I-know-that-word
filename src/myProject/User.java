@@ -22,7 +22,6 @@ public class User {
 
     }
 
-
     public String getNombre(){ return nombre; }
 
     public int getNivelDelJugador(){ return nivel; }
@@ -39,7 +38,5 @@ public class User {
         fileManager.escribirTexto(nombre);
         fileManager.escribirTexto(String.valueOf(nivel));
     }
-
-
 
 }
