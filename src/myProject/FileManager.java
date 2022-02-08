@@ -10,7 +10,6 @@ import java.util.ArrayList;
  * @version @version v.1.0.0 date: 02/02/2022
  */
 public class FileManager {
-    private File file;
     private FileReader fileReader;
     private BufferedReader input;//para hacer lectura
     private FileWriter fileWriter;
@@ -53,17 +52,20 @@ public class FileManager {
      * @return ArrayList lecturaUserFile
      */
 
-    public ArrayList <String> lecturaUserFile() {
+    public ArrayList <User> lecturaUserFile() {
 
-        ArrayList <String> usuariosRegistrados = new ArrayList<String>();
+        ArrayList <User> usuariosRegistrados = new ArrayList<User>();
 
         try {
             fileReader = new FileReader("src/myProject/files/usuariosListados.txt");
             input = new BufferedReader(fileReader);
-            String uline = input.readLine();
-            while(uline!=null){
-                usuariosRegistrados.add(uline);
-                uline=input.readLine();
+            String name = input.readLine();
+            String nivel= input.readLine();
+            while(name!=null && nivel!=null){
+                int level= Integer.parseInt(nivel);
+                usuariosRegistrados.add(new User(name,level));
+                name=input.readLine();
+                nivel=input.readLine();
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
