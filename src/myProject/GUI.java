@@ -291,6 +291,21 @@ public class GUI extends JFrame {
                 if(!entradaUsuario.getText().isEmpty())
                 {
                     nombreJugador=entradaUsuario.getText();
+                    //validar que no tenga caracteres especiales
+                    if( model.validarEntradaTexto(nombreJugador)){
+                        model.registrar(nombreJugador,0); //para la prueba, se debe configurar bien
+
+                        opcionHelp=true;
+                        remove(panelInicio);
+                        revalidate();
+                        repaint();
+                        crearInicioJuego();
+                    } else{
+                        JOptionPane.showMessageDialog(null,"No se aceptan caracteres especiales\n Intenta ingresar " +
+                                "solo letras");
+                    }
+
+                }else{JOptionPane.showMessageDialog(null,"Debes ingresar el nombre de usuario");}
                     if(model.buscarElUsuario(nombreJugador))
                     {
                         model.jugar();
@@ -323,6 +338,7 @@ public class GUI extends JFrame {
             }
             if (e.getSource()== botonIniciar){
                 model.mostrarUsuarios();
+
             }
 
 

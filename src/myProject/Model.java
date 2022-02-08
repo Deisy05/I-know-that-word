@@ -13,7 +13,7 @@ public class Model {
     private Word word;
     private User user;
 
-    FileManager fileManager= new FileManager();
+    FileManager fileManager = new FileManager();
 
     private ArrayList <User> usuarioList= new ArrayList<User>(); //los usuarios registrados
     private ArrayList <String> palabrasCorrectas;
@@ -29,7 +29,7 @@ public class Model {
 
     public  Model(){
 
-        usuarioList= fileManager.lecturaUserFile();
+        usuarioList = fileManager.lecturaUserFile();
         palabrasCorrectas = new ArrayList<String>();
         palabrasIncorrectas = new ArrayList<String>();
         palabrasAMostrar= new ArrayList<String>();
@@ -78,6 +78,23 @@ public class Model {
     }
 
     /**
+     * Este método restringe la entra de datos en el Jtexfield a solo carácteres sin signos especiales
+     */
+    public boolean validarEntradaTexto(String entrada) {
+        boolean valido = true;
+        int ascii = 0;
+        for (char aux : entrada.toCharArray()) {
+            ascii = (int) aux;
+            if (ascii < 97 || ascii > 122) {
+                valido = false;
+                break;
+            }
+        }
+        return valido;
+    }
+
+
+    /**
      * Este método retorna el nivel del jugar:
      * Si la lista de usuarios está vacía significa que el usuario es nuevo, por tanto su nivel será 0
      * Si la lista no está vacía se debe buscar el usuario en ella, si no está significa que el usuario es nuevo, su
@@ -97,7 +114,7 @@ public class Model {
                     nivel= usuarioList.get(usuarioList.indexOf(auxi)).getNivelDelJugador();
 
                 }
-            }
+           }
         }
         return nivel;
     }
@@ -170,18 +187,11 @@ public class Model {
      * Este método guarda el usuario en usuariosListados.txt
      */
 
-
-    //este método registra al usuario en el archivo .txt cuando se cierra el juego
-    public void guardarRegistro(){
-
-        try{
-            User aux;
-            for (int i=0; i< usuarioList.size(); i++){
-                aux = usuarioList.get(i);
-                aux.guardar();
-            }
-        }catch (Exception exception) {
-            exception.printStackTrace();
+//este método registra al usuario en el archivo .txt cuando se cierra el juego
+    public void guardarRegistro() {
+        if (!usuarioList.isEmpty()) {
+            User aux = usuarioList.get(usuarioList.size() - 1);
+            aux.guardar();
         }
     }
 
@@ -204,23 +214,23 @@ public class Model {
         //create a switch sentence
         switch (nivelUsuario) {
             case 1:
-                
+
                 break;
             case 2:
-                
+
                 break;
             case 3:
-                
+
                 break;
             case 4:
-                
+
                 break;
             case 5:
-                
+
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + nivelUsuario);
         }
-               
+
     }
 }
