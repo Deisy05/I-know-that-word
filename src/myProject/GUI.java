@@ -303,6 +303,9 @@ public class GUI extends JFrame {
                 JOptionPane.showMessageDialog(null,labelInstrucciones,null,JOptionPane.PLAIN_MESSAGE);
 
             }
+            if (e.getSource()== botonIniciar){
+                model.mostrarUsuarios();
+            }
 
 
         }

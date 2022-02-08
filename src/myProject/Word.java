@@ -34,5 +34,4 @@ public class Word {
         return palabras.get(random.nextInt(palabras.size()));
     }
 
-
 }

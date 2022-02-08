@@ -12,8 +12,10 @@ public class Model {
 
     private Word word;
     private User user;
+
     FileManager fileManager= new FileManager();
-    private ArrayList <User> usuarioList; //los usuarios registrados
+
+    private ArrayList <User> usuarioList= new ArrayList<User>(); //los usuarios registrados
     private ArrayList <String> palabrasCorrectas;
     private ArrayList <String> palabrasIncorrectas;
     private ArrayList <String> palabrasAMostrar;
@@ -27,15 +29,27 @@ public class Model {
 
     public  Model(){
 
-        usuarioList = new ArrayList<User>();
-        //actualizarRegistros(); crear arraList a partir de la lectura de datos en el archivo .txt
-
+        usuarioList= fileManager.lecturaUserFile();
         palabrasCorrectas = new ArrayList<String>();
         palabrasIncorrectas = new ArrayList<String>();
         palabrasAMostrar= new ArrayList<String>();
         flag=false;
 
     }
+
+    public void mostrarUsuarios(){
+        if(usuarioList.isEmpty()){
+            System.out.println("no hay usuarios aun");
+        }else{
+            for(User aux: usuarioList){
+                System.out.println("usuario: "+ aux.getNombre() + "\n nivel: "+ aux.getNivelDelJugador());
+            }
+        }
+    }
+
+
+
+
 
 
 
@@ -116,6 +130,8 @@ public class Model {
             flag=false;
         }
     }
+
+
 
     /**
      * Método que agrega una palabra incorrecta al arrayList palabrasIncorrectas.
