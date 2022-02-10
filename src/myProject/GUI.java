@@ -25,8 +25,9 @@ public class GUI extends JFrame {
     private static final String INFO2 = " Puedes salir en cualquier momento.\n"
             + "Sin embargo, si la partida no ha terminado la próxima vez que ingreses se iniciará la misma. ";
 
-    private JPanel panelInicio, panelGame,panelBotones;
+    private JPanel panelInicio, panelGame,panelBotones,panelPalabras;
     private JTextField entradaUsuario;
+    private JTextArea intro;
     private JButton botonOK, botonHelp, botonExit, botonIniciar, botonInstrucciones, botonSi, botonNo, botonContinuar;
     private JLabel labelUsername, labelInstrucciones, labelNivel, labelTiempo, labelPalabra;
     private ImageIcon  image;
@@ -34,7 +35,8 @@ public class GUI extends JFrame {
     private String nombreJugador;
 
     private UIManager ui;
-    private GridBagConstraints constraints; //componente del layout del JFrame
+    private GridBagConstraints constraints, layoutPanelGame; //componente del layout del JFrame y del panelGame
+
 
     /**
      * Constructor of GUI class
@@ -129,27 +131,27 @@ public class GUI extends JFrame {
 
     public void componentesDelPanelInicio(){
 
-        GridBagConstraints constra = new GridBagConstraints(); //Componente del layout
+        GridBagConstraints layoutPanelInicio = new GridBagConstraints(); //Componente del layout
         //etiqueta
         labelUsername= new JLabel();
         image=  new ImageIcon(getClass().getResource("/myProject/recursos/username.png"));
         labelUsername.setIcon(new ImageIcon(image.getImage().getScaledInstance(200,50, Image.SCALE_SMOOTH)));
-        constra.gridx=0;
-        constra.gridy=0;
-        constra.gridwidth=2;
-        constra.fill=GridBagConstraints.NONE;
-        constra.anchor=GridBagConstraints.CENTER;
-        panelInicio.add(labelUsername,constra);
+        layoutPanelInicio .gridx=0;
+        layoutPanelInicio .gridy=0;
+        layoutPanelInicio .gridwidth=2;
+        layoutPanelInicio .fill=GridBagConstraints.NONE;
+        layoutPanelInicio .anchor=GridBagConstraints.CENTER;
+        panelInicio.add(labelUsername,layoutPanelInicio );
         //Cajón de entrada del texto
         entradaUsuario= new JTextField();
         entradaUsuario.setPreferredSize(new Dimension(250,40));
         entradaUsuario.setFont(new Font("Arial ",Font.PLAIN,30));
-        constra.gridx=0;
-        constra.gridy=1;
-        constra.gridwidth=1;
-        constra.fill=GridBagConstraints.NONE;
-        constra.anchor=GridBagConstraints.LINE_END;
-        panelInicio.add(entradaUsuario, constra);
+        layoutPanelInicio .gridx=0;
+        layoutPanelInicio .gridy=1;
+        layoutPanelInicio .gridwidth=1;
+        layoutPanelInicio .fill=GridBagConstraints.NONE;
+        layoutPanelInicio .anchor=GridBagConstraints.LINE_END;
+        panelInicio.add(entradaUsuario, layoutPanelInicio );
         //Boton de confirmación
         botonOK= new JButton();
         botonOK.addMouseListener(escucha);
@@ -158,20 +160,20 @@ public class GUI extends JFrame {
         botonOK.setIcon(new ImageIcon(image.getImage().getScaledInstance(57,57, Image.SCALE_SMOOTH)));
         botonOK.setBorderPainted(false);
         botonOK.setContentAreaFilled(false);
-        constra.gridx=1;
-        constra.gridy=1;
-        constra.gridwidth=1;
-        constra.fill=GridBagConstraints.NONE;
-        constra.anchor=GridBagConstraints.LINE_START;
-        panelInicio.add(botonOK, constra);
+        layoutPanelInicio .gridx=1;
+        layoutPanelInicio .gridy=1;
+        layoutPanelInicio .gridwidth=1;
+        layoutPanelInicio .fill=GridBagConstraints.NONE;
+        layoutPanelInicio .anchor=GridBagConstraints.LINE_START;
+        panelInicio.add(botonOK, layoutPanelInicio );
         revalidate();
         repaint();
 
     }
 
     /**
-     * Esta clase crea el ícono del mensaje emergente del boton de ayuda
-     * @param reference es la ubicacion de la imagen
+     * Esta clase crea el ícono del mensaje emergente del botón de ayuda
+     * @param reference es la ubicación de la imagen
      * @param width  medida del ancho que se desea que tenga el icono
      * @param height  medida del alto  que se desea que tenga el icono
      * */
@@ -187,10 +189,10 @@ public class GUI extends JFrame {
      * Este método crea el panel de inicio del juego luego de la confirmación de usuario
      *
      */
-    public void crearInicioJuego(){
+    public void crearPanelGame(){
         panelGame= new Canvas(2);//Crea el panel con la imagen
-        //panelGame.setLayout(new GridBagLayout());//Set up JPanel Container's Layout
-        //GridBagConstraints constraint= new GridBagConstraints(); //Componente del layout del panelGame
+        panelGame.setLayout(new GridBagLayout());//Set up JPanel Container's Layout
+        layoutPanelGame= new GridBagConstraints(); //Componente del layout del panelGame
         panelGame.setPreferredSize(new Dimension(700,400));
         constraints.gridx=0;
         constraints.gridy=2;
@@ -198,9 +200,24 @@ public class GUI extends JFrame {
         constraints.fill= GridBagConstraints.NONE;
         constraints.anchor= GridBagConstraints.CENTER;
         this.add(panelGame,constraints);
-        crearPanelBotones();
-        crearComponentesPanelGame(nombreJugador);
 
+        intro= new JTextArea(" ¡HOLA "+nombreJugador.toUpperCase()+"!\n Estas en el nivel "+ model.nivelDelJugador(nombreJugador)+
+                "\n Presiona 'PLAY' para iniciar la partida");
+        intro.setEditable(false);
+        intro.setOpaque(false);
+        intro.setLineWrap(true);
+        intro.setWrapStyleWord(true);
+        intro.setPreferredSize(new Dimension(400,150));
+        intro.setFont(new Font("Impact", Font.PLAIN, 28));
+        intro.setForeground(Color.BLACK);
+        layoutPanelGame.gridx=0;
+        layoutPanelGame.gridy=0;
+        layoutPanelGame.gridwidth=1;
+        layoutPanelGame.fill= GridBagConstraints.NONE;
+        layoutPanelGame.anchor= GridBagConstraints.CENTER;
+        panelGame.add(intro,layoutPanelGame);
+
+        crearPanelBotonesInicio();
         revalidate();
         repaint();
 
@@ -213,7 +230,7 @@ public class GUI extends JFrame {
      * Botón de Iniciar Partida
      */
 
-    public void crearPanelBotones(){
+    public void crearPanelBotonesInicio (){
 
         panelBotones= new JPanel();
         panelBotones.setPreferredSize(new Dimension(900,100));
@@ -249,9 +266,59 @@ public class GUI extends JFrame {
     }
 
     public void crearComponentesPanelGame(String nombreU){
-        //labelNivel
-        //labelTime,
+       panelGame.remove(intro);
+
+       labelNivel= new JLabel("NIVEL: "+Integer.toString(model.nivelDelJugador(nombreJugador)));
+       labelNivel.setFont(new Font("Impact",Font.PLAIN,22));
+       labelNivel.setBackground(new Color(186,186,252,110));
+       labelNivel.setOpaque(true);
+       layoutPanelGame.gridx=0;
+       layoutPanelGame.gridy=0;
+       layoutPanelGame.gridwidth=1;
+       layoutPanelGame.fill= GridBagConstraints.NONE;
+       layoutPanelGame.anchor= GridBagConstraints.LINE_START;
+       panelGame.add(labelNivel,layoutPanelGame);
+
+       labelTiempo= new JLabel("00:00:00");
+       labelTiempo.setFont(new Font("Impact",Font.PLAIN,22));
+       labelTiempo.setBackground(new Color(186,186,252,110));
+       labelTiempo.setOpaque(true);
+       layoutPanelGame.gridx=1;
+       layoutPanelGame.gridy=0;
+       layoutPanelGame.gridwidth=1;
+       layoutPanelGame.fill= GridBagConstraints.NONE;
+       layoutPanelGame.anchor= GridBagConstraints.LINE_END;
+       panelGame.add(labelTiempo,layoutPanelGame);
+
+       panelPalabras= new JPanel(new GridBagLayout());
+       GridBagConstraints layoutPanelPalabras= new GridBagConstraints();
+       panelPalabras.setPreferredSize(new Dimension(690,300));
+       panelPalabras.setOpaque(false);
+       panelPalabras.setBorder(BorderFactory.createTitledBorder("Palabras"));
+       layoutPanelGame.gridx=0;
+       layoutPanelGame.gridy=1;
+       layoutPanelGame.gridwidth=2;
+       layoutPanelGame.fill= GridBagConstraints.NONE;
+       layoutPanelGame.anchor= GridBagConstraints.CENTER;
+       panelGame.add(panelPalabras,layoutPanelGame);
+
+       labelPalabra= new JLabel("PALABRA MEMORY XD");
+       labelPalabra.setPreferredSize(new Dimension(400,60));
+       labelPalabra.setFont(new Font("Impact",Font.PLAIN,50));
+       layoutPanelPalabras.gridx=0;
+       layoutPanelPalabras.gridy=0;
+       layoutPanelPalabras.fill= GridBagConstraints.NONE;
+       layoutPanelPalabras.anchor= GridBagConstraints.CENTER;
+       labelPalabra.setOpaque(true);
+       labelPalabra.setBorder(BorderFactory.createTitledBorder("etiqueta"));
+       panelPalabras.add(labelPalabra,layoutPanelPalabras);
+
+       revalidate();
+       repaint();
     }
+
+
+
 
     /**
      * Main process of the Java program
@@ -290,13 +357,14 @@ public class GUI extends JFrame {
                     nombreJugador=entradaUsuario.getText();
                     //validar que no tenga caracteres especiales
                     if( model.validarEntradaTexto(nombreJugador)){
-                        model.registrar(nombreJugador,0); //para la prueba, se debe configurar bien
+                        model.buscarElUsuario(nombreJugador); //busca al jugador y si no está, lo registra
 
                         opcionHelp=true;
                         remove(panelInicio);
                         revalidate();
                         repaint();
-                        crearInicioJuego();
+                        crearPanelGame();
+
                     } else{
                         JOptionPane.showMessageDialog(null,"No se aceptan caracteres especiales\n Intenta ingresar " +
                                 "solo letras minúsculas");
@@ -315,7 +383,7 @@ public class GUI extends JFrame {
             }
             if (e.getSource()== botonIniciar){
                 model.mostrarUsuarios();
-
+                crearComponentesPanelGame(nombreJugador);
             }
 
 

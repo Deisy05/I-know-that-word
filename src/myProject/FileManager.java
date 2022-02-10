@@ -102,6 +102,9 @@ public class FileManager {
             }
         }
     }
+    /**
+     * Este metodo elimina el contenido del archivo 'usuariosListados.txt'
+     */
 
     public void vaciarArchivo(){
         try {

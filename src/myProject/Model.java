@@ -20,7 +20,7 @@ public class Model {
     private ArrayList<String> palabrasIncorrectas;
     private ArrayList<String> palabrasAMostrar;
     private String auxPalabraC, auxPalabraI;
-    private int nivelUsuario;
+    private int nivelUsuario, indiceUsuario;
     private boolean flag;
 
     /**
@@ -39,40 +39,10 @@ public class Model {
     }
 
     public void mostrarUsuarios() {
-        if (usuarioList.isEmpty()) {
-            System.out.println("no hay usuarios aun");
-        } else {
-            for (User aux : usuarioList) {
-                System.out.println("usuario: " + aux.getNombre() + "\n nivel: " + aux.getNivelDelJugador());
-            }
+        for (User aux : usuarioList) {
+            System.out.println("usuario: " + aux.getNombre() + "\n nivel: " + aux.getNivelDelJugador());
         }
 
-    }
-
-
-    /**
-     * Este método registra el jugador:
-     * Si la lista de usuarios está vacía significa que el usuario es nuevo.
-     * Si la lista no está vacía se debe buscar el usuario en ella, si no está significa que el usuario es nuevo.
-     * Si el usuario si está en la lista entonces simplemente se le modifica el nuevo nivel.
-     *
-     * @param nombreJugador
-     * @param nivel
-     */
-
-    public void registrar(String nombreJugador, int nivel) {
-        boolean presente = false;
-        if (!usuarioList.isEmpty()) {
-            for (User aux : usuarioList) {
-                if (aux.getNombre() == nombreJugador) {
-                    usuarioList.get(usuarioList.indexOf(aux)).setNivelDelJugador(nivel);
-                    presente = true;
-                }
-            }
-        }
-        if (usuarioList.isEmpty() || !presente) {
-            usuarioList.add(new User(nombreJugador, nivel));
-        }
     }
 
     /**
@@ -91,6 +61,34 @@ public class Model {
         return valido;
     }
 
+    /**
+     * Este método busca al jugador:
+     * Si la lista no está vacía se debe buscar el usuario en ella, si no está se registra el usuario.
+     * Si la lista de usuarios está vacía significa que el usuario es nuevo y se debe registrar.
+     * Si el usuario si está en la lista entonces se le modifica el nuevo nivel.
+     */
+
+    public void buscarElUsuario(String userName) {
+        boolean auxExisteUsuario=false;
+        if(!usuarioList.isEmpty()) {
+            for (User value : usuarioList) {
+                if (value.getNombre().equals(userName)) {
+                    nivelUsuario = value.getNivelDelJugador();
+                    auxExisteUsuario = true;
+                    indiceUsuario = usuarioList.indexOf(value);
+                    System.out.println("Jugador: " + userName + " - Existe - En Nivel: " + nivelUsuario);
+                    break;
+                }
+            }
+        }if(!auxExisteUsuario){
+            nivelUsuario = 0;
+
+            System.out.println("Jugador: "+userName+" - No Existe - En Nivel: "+nivelUsuario);
+            usuarioList.add(new User(userName, nivelUsuario));
+        }
+
+    }
+
 
     /**
      * Este método retorna el nivel del jugar:
@@ -100,7 +98,7 @@ public class Model {
      * Si el usuario si está en la lista entonces simplemente se obtiene el nivel guardado.
      *
      * @param nombreJugador
-     * @return nivel del jugador.
+     * @return int
      */
 
 //este método se usa para poder iniciar el juego desde el ultimo nivel jugado
