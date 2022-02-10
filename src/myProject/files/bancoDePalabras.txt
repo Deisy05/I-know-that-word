@@ -198,4 +198,3 @@ delta
 omicron
 covid
 iphone
-

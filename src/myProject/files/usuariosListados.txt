@@ -1,10 +1,4 @@
-juan
+tera
 0
-andres
-3
-pepe
+pop
 0
-luis
-4
-deisy
-10

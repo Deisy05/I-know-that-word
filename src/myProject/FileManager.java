@@ -74,6 +74,8 @@ public class FileManager {
         }finally{
             try {
                 input.close();
+                File archivo= new File("src/myProject/files/usuariosListados.txt");
+                archivo.delete();
             } catch (IOException e) {
                 e.printStackTrace();
             }

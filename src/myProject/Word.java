@@ -19,7 +19,7 @@ public class Word {
 
     public Word (){
         FileManager fileManager= new FileManager();
-        palabras= fileManager.lecturaWordFile();
+        palabras = fileManager.lecturaWordFile();
 
     }
 
@@ -32,6 +32,7 @@ public class Word {
     public String generarPalabra(){
         Random random = new Random();
         return palabras.get(random.nextInt(palabras.size()));
+
     }
 
 }

@@ -21,6 +21,9 @@ public class User {
         this.nivel=nivel;
 
     }
+//    public User(){
+//
+//    }
 
     public String getNombre(){ return nombre; }
 
