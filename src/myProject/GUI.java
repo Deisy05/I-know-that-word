@@ -3,8 +3,11 @@ package myProject;
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Random;
 
 
 /**
@@ -29,11 +32,13 @@ public class GUI extends JFrame {
     private JTextField entradaUsuario;
     private JTextArea intro;
     private JButton botonOK, botonHelp, botonExit, botonIniciar, botonInstrucciones, botonSi, botonNo, botonContinuar;
+    private JButton botonOK, botonHelp, botonExit, botonIniciar, botonInstrucciones, botonSI, botonNO, botonContinuar;
     private JLabel labelUsername, labelInstrucciones, labelNivel, labelTiempo, labelPalabra;
     private ImageIcon  image;
-    private boolean opcionHelp;
-    private String nombreJugador;
-
+    private boolean opcionHelp, jugadorExiste;
+    private String nombreJugador, palabraVentana;
+    private ArrayList<String> listaDePalabrasEnJuego;
+    private Timer timer;
     private UIManager ui;
     private GridBagConstraints constraints, layoutPanelGame; //componente del layout del JFrame y del panelGame
 
@@ -80,9 +85,9 @@ public class GUI extends JFrame {
         this.add(headerProject,constraints);
         //Creación de botones
         botonHelp = new JButton();
-        botonHelp.addMouseListener(escucha);
+        botonHelp.addActionListener(escucha);
         botonHelp.setPreferredSize(new Dimension(80,50));
-        image = new ImageIcon(getClass().getResource("/myProject/recursos/help1.png"));
+        image = new ImageIcon(Objects.requireNonNull(getClass().getResource("/myProject/recursos/help1.png")));
         botonHelp.setIcon(new ImageIcon(image.getImage().getScaledInstance(80,50, Image.SCALE_SMOOTH)));
         botonHelp.setBorderPainted(false);
         botonHelp.setContentAreaFilled(false);
@@ -94,8 +99,8 @@ public class GUI extends JFrame {
         this.add(botonHelp,constraints);
 
         botonExit = new JButton();
-        botonExit.addMouseListener(escucha);
-        image = new ImageIcon(getClass().getResource("/myProject/recursos/close1.png"));
+        botonExit.addActionListener(escucha);
+        image = new ImageIcon(Objects.requireNonNull(getClass().getResource("/myProject/recursos/close1.png")));
         botonExit.setPreferredSize(new Dimension(80,50));
         botonExit.setIcon(new ImageIcon(image.getImage().getScaledInstance(80,50, Image.SCALE_SMOOTH)));
         botonExit.setBorderPainted(false);
@@ -117,6 +122,8 @@ public class GUI extends JFrame {
         constraints.anchor=GridBagConstraints.CENTER;
         this.add(panelInicio, constraints);
         componentesDelPanelInicio();
+        timer = new Timer(7000,escucha);
+        timer.start();
         revalidate();
         repaint();
 
@@ -134,7 +141,7 @@ public class GUI extends JFrame {
         GridBagConstraints layoutPanelInicio = new GridBagConstraints(); //Componente del layout
         //etiqueta
         labelUsername= new JLabel();
-        image=  new ImageIcon(getClass().getResource("/myProject/recursos/username.png"));
+        image=  new ImageIcon(Objects.requireNonNull(getClass().getResource("/myProject/recursos/username.png")));
         labelUsername.setIcon(new ImageIcon(image.getImage().getScaledInstance(200,50, Image.SCALE_SMOOTH)));
         layoutPanelInicio .gridx=0;
         layoutPanelInicio .gridy=0;
@@ -154,9 +161,9 @@ public class GUI extends JFrame {
         panelInicio.add(entradaUsuario, layoutPanelInicio );
         //Boton de confirmación
         botonOK= new JButton();
-        botonOK.addMouseListener(escucha);
+        botonOK.addActionListener(escucha);
         botonOK.setPreferredSize(new Dimension(57,57));
-        image = new ImageIcon(getClass().getResource("/myProject/recursos/okB.png"));
+        image = new ImageIcon(Objects.requireNonNull(getClass().getResource("/myProject/recursos/okB.png")));
         botonOK.setIcon(new ImageIcon(image.getImage().getScaledInstance(57,57, Image.SCALE_SMOOTH)));
         botonOK.setBorderPainted(false);
         botonOK.setContentAreaFilled(false);
@@ -172,14 +179,14 @@ public class GUI extends JFrame {
     }
 
     /**
-     * Esta clase crea el ícono del mensaje emergente del botón de ayuda
-     * @param reference es la ubicación de la imagen
+     * Este método retorna un objeto de tipo Icon y es el que crea el ícono del mensaje emergente del boton de ayuda
+     * @param reference es la ubicacion de la imagen
      * @param width  medida del ancho que se desea que tenga el icono
      * @param height  medida del alto  que se desea que tenga el icono
      * */
 
     public Icon iconoMessage (String reference,int width,int height){
-        image = new ImageIcon(getClass().getResource(reference));
+        image = new ImageIcon(Objects.requireNonNull(getClass().getResource(reference)));
         image= new ImageIcon(image.getImage().getScaledInstance(width,height,Image.SCALE_SMOOTH));
         return image;
     }
@@ -200,6 +207,8 @@ public class GUI extends JFrame {
         constraints.fill= GridBagConstraints.NONE;
         constraints.anchor= GridBagConstraints.CENTER;
         this.add(panelGame,constraints);
+        crearPanelBotones();
+       // crearComponentesPanelGame(nombreJugador);
 
         intro= new JTextArea(" ¡HOLA "+nombreJugador.toUpperCase()+"!\n Estas en el nivel "+ model.nivelDelJugador(nombreJugador)+
                 "\n Presiona 'PLAY' para iniciar la partida");
@@ -243,18 +252,18 @@ public class GUI extends JFrame {
         this.add(panelBotones, constraints);
 
         botonInstrucciones= new JButton();
-        botonInstrucciones.addMouseListener(escucha);
+        botonInstrucciones.addActionListener(escucha);
         botonInstrucciones.setPreferredSize(new Dimension(200,65));
-        image = new ImageIcon(getClass().getResource("/myProject/recursos/instruB.png"));
+        image = new ImageIcon(Objects.requireNonNull(getClass().getResource("/myProject/recursos/instruB.png")));
         botonInstrucciones.setIcon(new ImageIcon(image.getImage().getScaledInstance(200,65, Image.SCALE_SMOOTH)));
         botonInstrucciones.setBorderPainted(false);
         botonInstrucciones.setContentAreaFilled(false);
         panelBotones.add(botonInstrucciones);
 
         botonIniciar= new JButton();
-        botonIniciar.addMouseListener(escucha);
+        botonIniciar.addActionListener(escucha);
         botonIniciar.setPreferredSize(new Dimension(200,65));
-        image = new ImageIcon(getClass().getResource("/myProject/recursos/playB.png"));
+        image = new ImageIcon(Objects.requireNonNull(getClass().getResource("/myProject/recursos/playB.png")));
         botonIniciar.setIcon(new ImageIcon(image.getImage().getScaledInstance(200,65, Image.SCALE_SMOOTH)));
         botonIniciar.setBorderPainted(false);
         botonIniciar.setContentAreaFilled(false);
@@ -315,6 +324,30 @@ public class GUI extends JFrame {
 
        revalidate();
        repaint();
+    public void crearComponentesGame(/*String nombreU*/){
+        botonSI = new JButton("SI");
+        botonSI.addActionListener(escucha);
+        botonSI.setPreferredSize(new Dimension(200,65));
+        panelGame.add(botonSI);
+
+        botonNO = new JButton("NO");
+        botonNO.addActionListener(escucha);
+        botonNO.setPreferredSize(new Dimension(200,65));
+        panelGame.add(botonNO);
+
+        ArrayList<String> auxListaDePalabrasMostradas = listaDePalabrasEnJuego;
+
+        for(int i = 0; i <auxListaDePalabrasMostradas.size();i++){
+            Random random = new Random();
+            String palabraEnJLabel = auxListaDePalabrasMostradas.get(random.nextInt(auxListaDePalabrasMostradas.size()));
+            int auxIndiceJLabel = auxListaDePalabrasMostradas.indexOf(palabraEnJLabel);
+            labelPalabra = new JLabel(palabraEnJLabel);
+            panelGame.add(labelPalabra);
+
+            auxListaDePalabrasMostradas.remove(auxIndiceJLabel);
+
+        }
+
     }
 
 
@@ -334,22 +367,25 @@ public class GUI extends JFrame {
     /**
      * inner class that extends an Adapter Class or implements Listeners used by GUI class
      */
-    private class Escucha implements MouseListener {
+    private class Escucha implements ActionListener {
 
 
         @Override
-        public void mouseClicked(MouseEvent e) {
-           if(e.getSource()==botonExit){
-               model.guardarRegistro();
-               System.exit(0);
-           }
-            if(e.getSource()==botonHelp) {
-              if(!opcionHelp){
-                  JOptionPane.showMessageDialog(null,INFO1,"USERNAME",JOptionPane.PLAIN_MESSAGE,iconoMessage(
-                          "/myProject/recursos/imageUser.png",50,50));
-              }else{
-                  JOptionPane.showMessageDialog(null,INFO2,null,JOptionPane.INFORMATION_MESSAGE);
-              }
+        public void actionPerformed(ActionEvent e) {
+
+            if(e.getSource()==botonExit)
+            {
+                model.guardarRegistro();
+                System.exit(0);
+            }
+            if(e.getSource()==botonHelp)
+            {
+                if(!opcionHelp){
+                    JOptionPane.showMessageDialog(null,INFO1,"USERNAME",JOptionPane.PLAIN_MESSAGE,iconoMessage(
+                            "/myProject/recursos/imageUser.png",50,50));
+                }else{
+                    JOptionPane.showMessageDialog(null,INFO2,null,JOptionPane.INFORMATION_MESSAGE);
+                }
             }
             if(e.getSource()==botonOK){
                 //confirmarNivel();
@@ -357,20 +393,30 @@ public class GUI extends JFrame {
                     nombreJugador=entradaUsuario.getText();
                     //validar que no tenga caracteres especiales
                     if( model.validarEntradaTexto(nombreJugador)){
-                        model.buscarElUsuario(nombreJugador); //busca al jugador y si no está, lo registra
+
 
                         opcionHelp=true;
                         remove(panelInicio);
                         revalidate();
                         repaint();
-                        crearPanelGame();
+                        crearInicioJuego();
+
+                        //busca el usuario y determina su nivel
+                        model.buscarElUsuario(nombreJugador);
+
+
 
                     } else{
                         JOptionPane.showMessageDialog(null,"No se aceptan caracteres especiales\n Intenta ingresar " +
-                                "solo letras minúsculas");
+                                "solo letras");
                     }
 
-                }else{JOptionPane.showMessageDialog(null,"Debes ingresar el nombre de usuario");}
+                }else{
+                    JOptionPane.showMessageDialog(null,"Debes ingresar el nombre de usuario","Username is required",JOptionPane.ERROR_MESSAGE);
+                }
+
+
+
 
             }
             if(e.getSource()==botonInstrucciones){
@@ -384,28 +430,24 @@ public class GUI extends JFrame {
             if (e.getSource()== botonIniciar){
                 model.mostrarUsuarios();
                 crearComponentesPanelGame(nombreJugador);
+
+                //traemos todas las palabras en juego (correctas e incorrectas)
+                listaDePalabrasEnJuego = model.getArrayDePalabrasAleatorias();
+
+                model.jugar();
+                crearComponentesGame();
+
+                //model.mostrarUsuarios();
+                revalidate();
+                repaint();
+
             }
-
-
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-
+            if(e.getSource()== botonSI){
+                model.validarPalabraCorrecta(palabraVentana);
+            }
+            if(e.getSource()== botonNO){
+                model.validarPalabraCorrecta(palabraVentana);
+            }
         }
     }
 }

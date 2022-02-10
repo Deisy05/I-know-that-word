@@ -14,7 +14,7 @@ public class Canvas  extends JPanel {
     private ImageIcon imagenFrame,imagenPanel;
 
 /**
- * Constructor of class
+ * Constructor of class Canvas
  * @param option entero para determinar qué parte del método paintComponent se debe realizar
  * */
 
