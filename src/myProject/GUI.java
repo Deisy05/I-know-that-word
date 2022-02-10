@@ -33,7 +33,7 @@ public class GUI extends JFrame {
     private JLabel labelUsername, labelInstrucciones, labelNivel, labelTiempo, labelPalabra;
     private ImageIcon  image;
     private boolean opcionHelp, jugadorExiste;
-    private String nombreJugador;
+    private String nombreJugador, palabraVentana;
     private ArrayList<String> listaDePalabrasEnJuego;
     private Timer timer;
     private UIManager ui;
@@ -119,7 +119,7 @@ public class GUI extends JFrame {
         this.add(panelInicio, constraints);
         componentesDelPanelInicio();
         timer = new Timer(7000,escucha);
-
+        timer.start();
     }
 
     /**
@@ -266,30 +266,10 @@ public class GUI extends JFrame {
             labelPalabra = new JLabel(palabraEnJLabel);
             panelGame.add(labelPalabra);
 
-            timer.start();
             auxListaDePalabrasMostradas.remove(auxIndiceJLabel);
 
         }
 
-//        public void agregarPalabraIncorrecta()
-//        {
-//            auxPalabraC = word.generarPalabra();
-//            if(palabrasCorrectas.contains(auxPalabraC))
-//            {
-//                agregarPalabraIncorrecta();
-//            }
-//            if(palabrasIncorrectas.contains(auxPalabraC))
-//            {
-//                agregarPalabraIncorrecta();
-//            }
-//            else
-//            {
-//                palabrasIncorrectas.add(auxPalabraC);
-//            }
-//        }
-
-        //labelNivel
-        //labelTime,
     }
 
 
@@ -317,8 +297,7 @@ public class GUI extends JFrame {
 
             if(e.getSource()==botonExit)
             {
-                //model.confirmarNivel();
-                model.guardarRegistro();
+                //-->model.guardarRegistro();
                 System.exit(0);
             }
             if(e.getSource()==botonHelp)
@@ -339,12 +318,14 @@ public class GUI extends JFrame {
                     //validar que no tenga caracteres especiales
                     if( model.validarEntradaTexto(nombreJugador)){
 
+
                         opcionHelp=true;
                         remove(panelInicio);
                         revalidate();
                         repaint();
                         crearInicioJuego();
 
+                        //busca el usuario y determina su nivel
                         model.buscarElUsuario(nombreJugador);
 
 
@@ -379,7 +360,9 @@ public class GUI extends JFrame {
             }
             if (e.getSource()== botonIniciar)
             {
-                listaDePalabrasEnJuego = model.getPalabrasAMostrar();
+                //traemos todas las palabras en juego (correctas e incorrectas)
+                listaDePalabrasEnJuego = model.getArrayDePalabrasAleatorias();
+
                 model.jugar();
                 crearComponentesPanelGame();
 
@@ -389,10 +372,10 @@ public class GUI extends JFrame {
 
             }
             if(e.getSource()== botonSI){
-                model.verificarAcierto();
+                model.validarPalabraCorrecta(palabraVentana);
             }
             if(e.getSource()== botonNO){
-                model.verificarAcierto();
+                model.validarPalabraCorrecta(palabraVentana);
             }
         }
     }

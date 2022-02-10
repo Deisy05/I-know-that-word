@@ -1,6 +1,7 @@
 package myProject;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * @author Deisy Catalina Melo - deisy.melo@correounivalle.edu.co
@@ -9,72 +10,38 @@ import java.util.ArrayList;
  */
 public class Model {
 
-    private Word word;
+    private Diccionario diccionario;
     private User user;
 
     FileManager fileManager = new FileManager();
 
-    private ArrayList <User> usuarioList= new ArrayList<User>(); //los usuarios registrados
-    private ArrayList <String> palabrasCorrectas;
-    private ArrayList <String> palabrasIncorrectas;
-    private ArrayList <String> palabrasAMostrar;
+    //private ArrayList <User> usuarioList= new ArrayList<User>(); //los usuarios registrados
+    private ArrayList <String> palabrasAMostrar = new ArrayList<>();
     private String auxPalabraC, auxPalabraI;
-    private int nivelUsuario, aciertos, errores, indiceUsuario;
+    private int nivelUsuario, errores, indiceUsuario;
     private boolean auxExisteUsuario;
+    private User miUsuario;
+
+
+
+    String nombreUsuario, palabraEnPantalla;
+    int nivelesAprobados, nivelActual, cantPalabrasDelNivel, aciertos, flagPalabrasCorrectas, flagNivel;
+    double porcentajeAciertos;
+    private ArrayList<String> palabrasNivel = new ArrayList<>();
+    private ArrayList<String> arraListPalabrasCorrectas = new ArrayList<>();
+    private ArrayList<String> arraListPalabrasIncorrectas = new ArrayList<>();
+    private ArrayList<String> arrayDePalabrasAleatorias = new ArrayList<>();
+    boolean nuevoUsuario;
+
+
 
     /**
      * Constructor of class
      */
-
     public  Model(){
 
-        usuarioList = fileManager.lecturaUserFile();
-        palabrasCorrectas = new ArrayList<String>();
-        palabrasIncorrectas = new ArrayList<String>();
-        palabrasAMostrar= new ArrayList<String>();
-        auxExisteUsuario = false;
-        word = new Word();
-
     }
 
-    public void mostrarUsuarios(){
-        if(usuarioList.isEmpty()){
-            System.out.println("no hay usuarios aun");
-        }else{
-            for(User aux: usuarioList){
-                System.out.println("Usuario: "+ aux.getNombre() + "\n nivel: "+ aux.getNivelDelJugador());
-            }
-        }
-    }
-
-
-
-
-    /**
-     * Este método registra el jugador:
-     * Si la lista de usuarios está vacía significa que el usuario es nuevo.
-     * Si la lista no está vacía se debe buscar el usuario en ella, si no está significa que el usuario es nuevo.
-     * Si el usuario si está en la lista entonces simplemente se le modifica el nuevo nivel.
-     * @param nombreJugador
-     * @param nivel
-     */
-
-    public void registrar(String nombreJugador,int nivel) {
-        boolean presente=false;
-        if (!usuarioList.isEmpty())
-        {
-            for (User aux : usuarioList)
-            {
-                if (aux.getNombre() == nombreJugador) {
-                    usuarioList.get(usuarioList.indexOf(aux)).setNivelDelJugador(nivel);
-                    presente = true;
-                }
-            }
-        }
-        if(usuarioList.isEmpty() || !presente){
-            usuarioList.add(new User(nombreJugador, nivel));
-        }
-    }
 
     /**
      * Este método restringe la entra de datos en el Jtexfield a solo carácteres sin signos especiales
@@ -93,180 +60,209 @@ public class Model {
     }
 
 
-    /**
-     * Este método retorna el nivel del jugar:
-     * Si la lista de usuarios está vacía significa que el usuario es nuevo, por tanto su nivel será 0
-     * Si la lista no está vacía se debe buscar el usuario en ella, si no está significa que el usuario es nuevo, su
-     * nivel será 0.
-     * Si el usuario si está en la lista entonces simplemente se obtiene el nivel guardado.
-     * @param nombreJugador
-     * @return nivel del jugador.
-     */
-
-//este método se usa para poder iniciar el juego desde el ultimo nivel jugado
-    public int nivelDelJugador (String nombreJugador){
-        int nivel = 0;
-
-        if (!usuarioList.isEmpty())
-        {
-            for(User auxi: usuarioList)
-            {
-                if(auxi.getNombre()==nombreJugador)
-                {
-                    nivel= usuarioList.get(usuarioList.indexOf(auxi)).getNivelDelJugador();
-
-                }
-            }
-        }
-        return nivel;
-    }
-
-    /**
-     * Método que agrega una palabra correcta al arrayList palabrasCorrectas.
-     * verifica que la palabra no se encuentre en el arrayList para lograr agregarla.
-     */
-
-    public void agregarPalabraCorrecta()
+    public void buscarElUsuario(String nombreJugador)
     {
-        auxPalabraC = word.generarPalabra();
-        if(palabrasCorrectas.contains(auxPalabraC))
-        {
-            agregarPalabraCorrecta();
-
-        }else
-        {
-            palabrasCorrectas.add(auxPalabraC);
+        diccionario = new Diccionario();
+        nuevoUsuario = false;
+        nombreUsuario = nombreJugador;
+        miUsuario = new User(nombreUsuario);
+        if (miUsuario.determinarExistenciaJugador()){
+            nivelesAprobados = miUsuario.getNivelDelJugador();
+        }else{
+            miUsuario.registrarJugador();
+            nuevoUsuario = true;
+            nivelesAprobados = 0;
+        }
+        aciertos=0;
+        flagPalabrasCorrectas =0;
+        flagNivel=0;
+        setNivelActual();
+        if (nivelesAprobados<8) {
+            nivelActual = nivelesAprobados + 1;
+        }else {
+            nivelActual = nivelesAprobados;
         }
     }
 
-    /**
-     * Método que agrega una palabra incorrecta al arrayList palabrasIncorrectas.
-     * Primero verifica que la palabra no se encuentre en el arrayList 'palabrasCorrectas'
-     * Luego verifica que la palabra tampoco esté en el arrayList 'palabrasIncorrectas'
-     * una vez verificadas estas dos condiciones la agrega al arraylist 'palabrasIncorrectas'
-     */
-
-    public void agregarPalabraIncorrecta()
+    private void setNivelActual()
     {
-        auxPalabraC = word.generarPalabra();
-        if(palabrasCorrectas.contains(auxPalabraC))
-        {
-            agregarPalabraIncorrecta();
+        aciertos=0;
+        nivelActual = nivelesAprobados+1;
+        asignarCantidadPalabrasPorNivel();
+        palabraEnPantalla = "";
+        arraListPalabrasCorrectas = diccionario.generarPalabrasCorrectas(cantPalabrasDelNivel /2);
+        arraListPalabrasIncorrectas = diccionario.generarPalabrasIncorrectas(cantPalabrasDelNivel /2);
+        //palabrasNivel = new ArrayList<>();
+        generarArrayDePalabrasAleatoriaDelNivel();
+    }
+
+    private void setNivelesAprobados(){
+        if(aciertos >= cantPalabrasDelNivel *porcentajeAciertos){
+            nivelesAprobados= user.setNivelDelJugador();
+            setNivelActual();
+            flagNivel=0;
+            flagPalabrasCorrectas=0;
         }
-        if(palabrasIncorrectas.contains(auxPalabraC))
-        {
-            agregarPalabraIncorrecta();
+        else{
+            flagNivel=0;
+            flagPalabrasCorrectas=0;
+            asignarCantidadPalabrasPorNivel();
+            palabraEnPantalla="";
+            arraListPalabrasCorrectas = diccionario.generarPalabrasCorrectas(cantPalabrasDelNivel /2);
+            arraListPalabrasIncorrectas = diccionario.generarPalabrasIncorrectas(cantPalabrasDelNivel /2);
+            palabrasNivel = new ArrayList<>();
+            generarArrayDePalabrasAleatoriaDelNivel();
         }
-        else
-        {
-            palabrasIncorrectas.add(auxPalabraC);
+
+    }
+
+    private void asignarPorcentajesPorNivel(){
+        switch (nivelActual){
+            case 1, 2 -> porcentajeAciertos=0.7;
+            case 3-> porcentajeAciertos=0.75;
+            case 4, 5 -> porcentajeAciertos=0.8;
+            case 6-> porcentajeAciertos=0.85;
+            case 7, 8 -> porcentajeAciertos=0.9;
+            case 9-> porcentajeAciertos=0.95;
+            case 10->porcentajeAciertos=1;
+        }
+    }
+
+    private void asignarCantidadPalabrasPorNivel(){
+        switch (nivelActual){
+            case 1-> cantPalabrasDelNivel =20;
+            case 2-> cantPalabrasDelNivel =40;
+            case 3-> cantPalabrasDelNivel =50;
+            case 4-> cantPalabrasDelNivel =60;
+            case 5-> cantPalabrasDelNivel =70;
+            case 6-> cantPalabrasDelNivel =80;
+            case 7-> cantPalabrasDelNivel =100;
+            case 8-> cantPalabrasDelNivel =120;
+            case 9-> cantPalabrasDelNivel =140;
+            case 10-> cantPalabrasDelNivel =200;
         }
     }
 
 
-    /**
-     * Este método guarda el usuario en usuariosListados.txt
-     */
+    private void generarArrayDePalabrasAleatoriaDelNivel()
+    {
 
-//este método registra al usuario en el archivo .txt cuando se cierra el juego
-    public void guardarRegistro() {
-        if (!usuarioList.isEmpty()) {
-            for(User jugador: usuarioList){
-                jugador.guardar();
-            }
+        palabrasAMostrar.addAll(arraListPalabrasCorrectas);
+        palabrasAMostrar.addAll(arraListPalabrasIncorrectas);
+        ArrayList<String> auxPalabrasAMostrar = palabrasAMostrar;
+
+        while (auxPalabrasAMostrar.size()>0)
+        {
+            Random random = new Random();
+            String palabra = auxPalabrasAMostrar.get(random.nextInt(auxPalabrasAMostrar.size()));
+            int auxIndice = auxPalabrasAMostrar.indexOf(palabra);
+            arrayDePalabrasAleatorias.add(palabra);
+            auxPalabrasAMostrar.remove(auxIndice);
         }
     }
 
-    /**
-     * This method is for searching if a user exists
-     * @param userName
-     * @return boolean
-     */
-    public void buscarElUsuario(String userName) {
+    public ArrayList<String> getArrayDePalabrasAleatorias()
+    {
+        return arrayDePalabrasAleatorias;
+    }
 
-        for (User value : usuarioList) {
-            if (value.getNombre().equals(userName)) {
-                nivelUsuario = value.getNivelDelJugador();
-                auxExisteUsuario = true;
-                indiceUsuario = usuarioList.indexOf(value);
-                System.out.println("Jugador: "+userName+" - Existe: "+auxExisteUsuario+" - En Nivel: "+nivelUsuario);
+    public String getPalabrasNivel(){
+        if (flagNivel<arrayDePalabrasAleatorias.size()){
+            palabraEnPantalla = arrayDePalabrasAleatorias.get(flagNivel);
+            flagNivel++;
+        }else{
+            setNivelesAprobados();
+        }
+        return palabraEnPantalla;
+    }
+
+
+
+
+    public boolean validarPalabraCorrecta(String palabra){
+
+        boolean perteneceCorrecta= false;
+        for (String elementoListCorrecta : arraListPalabrasCorrectas) {
+            if (elementoListCorrecta.equals(palabra)) {
+                perteneceCorrecta = true;
                 break;
             }
-        }if(!auxExisteUsuario){
-            nivelUsuario = 0;
-
-            System.out.println("Jugador: "+userName+" - No Existe - En Nivel: "+nivelUsuario);
-            registrar(userName,nivelUsuario);
         }
-        //return auxExisteUsuario;
+        return perteneceCorrecta;
     }
 
 
+    public void setAciertos( boolean seleccionEnGUI){
+        boolean selccionCorrecta = validarPalabraCorrecta(palabraEnPantalla);
+        if (seleccionEnGUI == selccionCorrecta){
+            aciertos++;
+        }
+    }//si no responde nada?
+
+
+    public int  getAciertos(){
+        return aciertos;
+    }
+
+
+    public boolean isNuevoUsuario() {
+        return nuevoUsuario;
+    }
+
+
+    public int getNivelActual() {
+        return nivelActual;
+    }
+
+
+    public String getPalabrasMemorizar() {
+        String palabraMemorizar="";
+        if (flagPalabrasCorrectas < arraListPalabrasCorrectas.size()){
+            palabraMemorizar = arraListPalabrasCorrectas.get(flagPalabrasCorrectas);
+            flagPalabrasCorrectas++;
+        }
+        return palabraMemorizar;
+    }
+
+
+
+
+ //utilizamos lo creado buscarElUsuario
     public void jugar() {
         //create a switch sentence
-        switch (nivelUsuario+1) {
+        switch (nivelActual) {
             case 1 ->
                     {
 
                         System.out.println("nivel 1");
-                        for (int i = 0; i <4;i++)
-                        {
-                            agregarPalabraCorrecta();
-                            agregarPalabraIncorrecta();
-                        }
+
                         System.out.println("**Correctas**");
-                        for (int i = 0; i <4;i++)
+                        for (int i = 0; i <10;i++)
                         {
-                            System.out.println(palabrasCorrectas.get(i));
+                            System.out.println(arraListPalabrasCorrectas.get(i));
                         }
                         System.out.println("**Incorrectas**");
-                        for (int i = 0; i <4;i++)
+                        for (int i = 0; i <10;i++)
                         {
-                            System.out.println(palabrasIncorrectas.get(i));
+                            System.out.println(arraListPalabrasIncorrectas.get(i));
                         }
 
-                        palabrasAMostrar.addAll(palabrasCorrectas);
-                        palabrasAMostrar.addAll(palabrasIncorrectas);
-                        System.out.println("mostrar palabras: "+palabrasAMostrar.size());
+                       System.out.println("mostrar palabras: "+arrayDePalabrasAleatorias.size());
                         //por consola total de palabras a mostrar
-                        for (String s : palabrasAMostrar) {
+                        for (String s : arrayDePalabrasAleatorias) {
                             System.out.println(s);
                         }
+
+                       // validarPalabraCorrecta();
+                        //determinarAciertos
 
                         //vaciamos palabras correctas e incorrectas
                         borrarArreglosDePalabras();
 
-                        //determinarAciertos
-                        if(aciertos>=7){
-                            usuarioList.get(indiceUsuario).setNivelDelJugador(nivelUsuario+1);
-                        }
+
 
                     }
             case 2 -> {
-                System.out.println("nivel 2");
-                for (int i = 0; i <8;i++)
-                {
-                    agregarPalabraCorrecta();
-                    agregarPalabraIncorrecta();
-                }
-                System.out.println("**Correctas**");
-                for (int i = 0; i <8;i++) {
-                    System.out.println(palabrasCorrectas.get(i));
-                }
-                System.out.println("**Incorrectas**");
-                for (int i = 0; i <8;i++) {
-
-                    System.out.println(palabrasIncorrectas.get(i));
-                }
-
-                borrarArreglosDePalabras();
-                //determinarAciertos();
-                if(aciertos>=14){
-                    usuarioList.get(indiceUsuario).setNivelDelJugador(nivelUsuario+1);
-                    //función que borra el arrayList de palabras correctas e incorrectas
-                    //y reescribe en el .txt el usuario con su nuevo nivel
-                    reescribirNivel();
-                }
 
             }
             case 3 -> System.out.println("nivel 3");
@@ -280,13 +276,11 @@ public class Model {
         }
 
     }
-    public ArrayList<String> getPalabrasAMostrar() {
-        return palabrasAMostrar;
-    }
+
 
     private void borrarArreglosDePalabras() {
-        palabrasCorrectas.clear();
-        palabrasIncorrectas.clear();
+        arraListPalabrasCorrectas.clear();
+        arraListPalabrasIncorrectas.clear();
     }
 
     private void determinarAciertos() {
@@ -297,11 +291,6 @@ public class Model {
 
     }
 
-//    public void contadorErrores() {
-//    }
 
-    public void verificarAcierto(){
-       // if(){}
-    }
 
 }

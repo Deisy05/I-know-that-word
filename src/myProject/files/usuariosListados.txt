@@ -1,4 +1,1 @@
-tera
-0
-pop
-0
+luis: 6
