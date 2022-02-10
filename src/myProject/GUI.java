@@ -115,6 +115,8 @@ public class GUI extends JFrame {
         constraints.anchor=GridBagConstraints.CENTER;
         this.add(panelInicio, constraints);
         componentesDelPanelInicio();
+        revalidate();
+        repaint();
 
     }
 
@@ -162,6 +164,8 @@ public class GUI extends JFrame {
         constra.fill=GridBagConstraints.NONE;
         constra.anchor=GridBagConstraints.LINE_START;
         panelInicio.add(botonOK, constra);
+        revalidate();
+        repaint();
 
     }
 
@@ -238,6 +242,8 @@ public class GUI extends JFrame {
         botonIniciar.setBorderPainted(false);
         botonIniciar.setContentAreaFilled(false);
         panelBotones.add(botonIniciar);
+        revalidate();
+        repaint();
 
 
     }
@@ -246,9 +252,6 @@ public class GUI extends JFrame {
         //labelNivel
         //labelTime,
     }
-
-
-
 
     /**
      * Main process of the Java program
@@ -296,7 +299,7 @@ public class GUI extends JFrame {
                         crearInicioJuego();
                     } else{
                         JOptionPane.showMessageDialog(null,"No se aceptan caracteres especiales\n Intenta ingresar " +
-                                "solo letras");
+                                "solo letras minúsculas");
                     }
 
                 }else{JOptionPane.showMessageDialog(null,"Debes ingresar el nombre de usuario");}
@@ -305,7 +308,7 @@ public class GUI extends JFrame {
             if(e.getSource()==botonInstrucciones){
                 labelInstrucciones= new JLabel();
                 image= new ImageIcon(getClass().getResource("/myProject/recursos/instrucciones.png"));
-                labelInstrucciones.setIcon(new ImageIcon(image.getImage().getScaledInstance(500,450,
+                labelInstrucciones.setIcon(new ImageIcon(image.getImage().getScaledInstance(600,480,
                         Image.SCALE_SMOOTH)));
                 JOptionPane.showMessageDialog(null,labelInstrucciones,null,JOptionPane.PLAIN_MESSAGE);
 

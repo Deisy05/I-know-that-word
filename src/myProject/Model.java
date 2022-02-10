@@ -39,7 +39,6 @@ public class Model {
     }
 
     public void mostrarUsuarios() {
-        user.setNivelDelJugador(2);
         if (usuarioList.isEmpty()) {
             System.out.println("no hay usuarios aun");
         } else {
@@ -179,9 +178,11 @@ public class Model {
 
 //este método registra al usuario en el archivo .txt cuando se cierra el juego
     public void guardarRegistro() {
+        fileManager.vaciarArchivo();
         if (!usuarioList.isEmpty()) {
-            User aux = usuarioList.get(usuarioList.size() - 1);
-            aux.guardar();
+            for(User jugador: usuarioList){
+                jugador.guardar();
+            }
         }
     }
 }
