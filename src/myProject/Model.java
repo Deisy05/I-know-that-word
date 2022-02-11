@@ -2,6 +2,8 @@ package myProject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Random;
+
 
 /**
  * @author Deisy Catalina Melo - deisy.melo@correounivalle.edu.co
@@ -59,7 +61,10 @@ public class Model {
         return valido;
     }
 
-
+    /**
+     *
+     * @param nombreJugador
+     */
     public void buscarElUsuario(String nombreJugador)
     {
         diccionario = new Diccionario();
@@ -84,6 +89,7 @@ public class Model {
         }
     }
 
+
     private void setNivelActual()
     {
         aciertos=0;
@@ -92,7 +98,7 @@ public class Model {
         palabraEnPantalla = "";
         arraListPalabrasCorrectas = diccionario.generarPalabrasCorrectas(cantPalabrasDelNivel /2);
         arraListPalabrasIncorrectas = diccionario.generarPalabrasIncorrectas(cantPalabrasDelNivel /2);
-        //palabrasNivel = new ArrayList<>();
+
         generarArrayDePalabrasAleatoriaDelNivel();
     }
 
@@ -220,7 +226,9 @@ public class Model {
         if (flagPalabrasCorrectas < arraListPalabrasCorrectas.size()){
             palabraMemorizar = arraListPalabrasCorrectas.get(flagPalabrasCorrectas);
             flagPalabrasCorrectas++;
+            //System.out.println("esta es palabra a memorizar: "+palabraMemorizar);
         }
+
         return palabraMemorizar;
     }
 
@@ -253,11 +261,13 @@ public class Model {
                             System.out.println(s);
                         }
 
+
+
                        // validarPalabraCorrecta();
                         //determinarAciertos
 
                         //vaciamos palabras correctas e incorrectas
-                        borrarArreglosDePalabras();
+                        //borrarArreglosDePalabras();
 
 
 

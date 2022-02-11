@@ -83,6 +83,12 @@ public class FileManager
         }
     }
 
+    /**
+     * Actualiza los datos del jugador
+     * @param posicion
+     * @param nivelNuevo
+     */
+
     public void actualizarNivel(int posicion, int nivelNuevo)
     {
         try {

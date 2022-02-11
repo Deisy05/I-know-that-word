@@ -35,7 +35,7 @@ public class User {
 
     /**
      * determinar si existe un jugador
-     * @return boolean existeUsuario
+     * @return boolean
      */
     public boolean determinarExistenciaJugador() {
         if (buscarJugador()!=-1)
@@ -45,7 +45,7 @@ public class User {
 
     /**
      * ver si un jugador está registrado
-     * @return posicion
+     * @return int posicion
      */
     private int buscarJugador(){
         int posicion = -1;
@@ -54,7 +54,6 @@ public class User {
             if (auxJugador.equals(userName)){
                 posicion=i;
                 break;
-
             }
 
         }
@@ -99,13 +98,6 @@ public class User {
 
 
     public String getNombre(){ return userName; }
-
-//    public int getNivelDelJugador(){ return nivel; }
-//
-//    public void setNivelDelJugador(int nivelJugador){
-//
-//        nivel=nivelJugador;
-//    }
 
     /**
      * Este método registra los datos del usuario en el archivo .txt
