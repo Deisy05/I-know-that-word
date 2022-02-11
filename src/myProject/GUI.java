@@ -25,15 +25,14 @@ public class GUI extends JFrame {
     //Información en el botón de ayuda, en el panel del juego.
     private static final String INFO2 = " Puedes salir en cualquier momento.\n"
             + "Sin embargo, si la partida no ha terminado la próxima vez que ingreses se iniciará la misma. ";
-    private JPanel panelInicio, panelGame, panelBotones, panelPalabras;
+    private JPanel panelInicio, panelGame, panelBotones, panelPalabras, panelMensaje;
     private JTextField entradaUsuario;
     private JTextArea intro;
     private JButton botonOK, botonHelp, botonExit, botonIniciar, botonInstrucciones, botonSI, botonNO, botonContinuar;
     private JLabel labelUsername, labelInstrucciones, labelNivel, labelTiempo, labelPalabra;
     private ImageIcon image;
-    private boolean opcionHelp, jugadorExiste;
-    private String nombreJugador, palabraVentana;
-    private ArrayList<String> listaDePalabrasEnJuego;
+    private boolean opcionHelp;
+    private String nombreJugador;
     private Timer timer;
     private GridBagConstraints constraints, layoutPanelGame; //componente del layout del JFrame y del panelGame
 
@@ -116,11 +115,10 @@ public class GUI extends JFrame {
 
     /**
      * Este método crea y agrega al panel de inicio los componentes:
-     * labelUsername; Etiqueta para indicar lo que se desea que ingrese el usuario en la caja de texto
-     * entradaUsuario; Componente para la entrada del texto
-     * botonOk; Botón de confirmación luego de ingresar el nombre de usuario
+     * Jlabel labelUsername; Etiqueta para indicar lo que se desea que ingrese el usuario en la caja de texto
+     * JtextField entradaUsuario; Componente para la entrada del texto
+     * Jbutton botonOk; Botón de confirmación luego de ingresar el nombre de usuario
      */
-
     public void componentesDelPanelInicio() {
 
         GridBagConstraints layoutPanelInicio = new GridBagConstraints(); //Componente del layout
@@ -165,12 +163,10 @@ public class GUI extends JFrame {
     /**
      * Este método retorna un objeto de tipo Icon.
      * Es usado para el icono del mensaje emergente del botón de ayuda
-     *
-     * @param reference es la ubicación de la imagen
-     * @param width     medida del ancho que se desea que tenga el icono
-     * @param height    medida del alto  que se desea que tenga el icono
+     * @param reference  ubicación de la imagen
+     * @param width     ancho  del icono
+     * @param height    alto del icono
      */
-
     public Icon iconoMessage(String reference, int width, int height) {
         image = new ImageIcon(Objects.requireNonNull(getClass().getResource(reference)));
         image = new ImageIcon(image.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
@@ -178,7 +174,10 @@ public class GUI extends JFrame {
     }
 
     /**
-     * Este método crea el panel de inicio del juego luego de la confirmación de usuario
+     * Después de ingresar el usuario, crea los componentes:
+     * Jpanel panelGame: en él se lleva acabo el juego
+     * JtextArea intro: mensaje introductorio
+     * Invoca el método para agregar los botones de instrucciones y play
      */
     public void crearPanelGame() {
         panelGame = new Canvas(2);//Crea el panel con la imagen
@@ -193,15 +192,15 @@ public class GUI extends JFrame {
         this.add(panelGame, constraints);
 
         // crearComponentesPanelGame(nombreJugador);
-        intro = new JTextArea("¡HOLA " + nombreJugador.toUpperCase() + "!\n" +
-                "Estas en el nivel " + model.getNivelActual() + "\n Presiona PLAY para iniciar");
+        intro = new JTextArea("   ¡HOLA " + nombreJugador.toUpperCase() + "!\n" +
+                "   Estas en el nivel " + model.getNivelActual() + "\n   Presiona PLAY para iniciar");
         intro.setEditable(false);
-        intro.setOpaque(true);
         intro.setLineWrap(true);
         intro.setWrapStyleWord(true);
+        intro.setBackground(new Color(186,186,252,130));
+        intro.setOpaque(true);
         intro.setPreferredSize(new Dimension(400, 150));
         intro.setFont(new Font("Impact", Font.PLAIN, 28));
-        intro.setForeground(Color.BLACK);
         layoutPanelGame.gridx = 0;
         layoutPanelGame.gridy = 0;
         layoutPanelGame.gridwidth = 1;
@@ -214,12 +213,10 @@ public class GUI extends JFrame {
     }
 
     /**
-     * Este método crea el panel en que se ubican los botones del juego.
-     * Además, crea los componentes:
+     * Este método crea el panel en que se ubican los botones del juego y los componentes:
      * Botón de Instrucciones
      * Botón de Iniciar Partida
      */
-
     public void crearPanelBotonesInicio() {
 
         panelBotones = new JPanel();
@@ -249,16 +246,18 @@ public class GUI extends JFrame {
         botonIniciar.setBorderPainted(false);
         botonIniciar.setContentAreaFilled(false);
         panelBotones.add(botonIniciar);
-        revalidate();
-        repaint();
     }
 
+    /**
+     * Crea los componentes para iniciar la partida:
+     * etiqueta del tiempo
+     * etiqueta del nivel
+     * etiqueta de las palabras que se deben memorizar
+     */
     public void crearComponentesPanelGame() {
-        panelGame.remove(intro);
 
         labelNivel = new JLabel("NIVEL: " + Integer.toString(model.getNivelActual()));
         labelNivel.setFont(new Font("Impact", Font.PLAIN, 24));
-        //labelNivel.setOpaque(true);
         layoutPanelGame.gridx = 0;
         layoutPanelGame.gridy = 0;
         layoutPanelGame.gridwidth = 1;
@@ -268,7 +267,6 @@ public class GUI extends JFrame {
 
         labelTiempo = new JLabel("00:00");
         labelTiempo.setFont(new Font("Impact", Font.PLAIN, 24));
-        //labelTiempo.setOpaque(true);
         layoutPanelGame.gridx = 1;
         layoutPanelGame.gridy = 0;
         layoutPanelGame.gridwidth = 1;
@@ -280,7 +278,6 @@ public class GUI extends JFrame {
         GridBagConstraints layoutPanelPalabras = new GridBagConstraints();
         panelPalabras.setPreferredSize(new Dimension(690, 350));
         panelPalabras.setOpaque(false);
-        panelPalabras.setBorder(BorderFactory.createTitledBorder("Palabras"));
         layoutPanelGame.gridx = 0;
         layoutPanelGame.gridy = 1;
         layoutPanelGame.gridwidth = 2;
@@ -288,7 +285,7 @@ public class GUI extends JFrame {
         layoutPanelGame.anchor = GridBagConstraints.CENTER;
         panelGame.add(panelPalabras, layoutPanelGame);
 
-        labelPalabra = new JLabel(model.getPalabrasMemorizar());
+        labelPalabra = new JLabel();
         labelPalabra.setFont(new Font("Impact", Font.PLAIN, 50));
         layoutPanelPalabras.gridx = 0;
         layoutPanelPalabras.gridy = 0;
@@ -301,59 +298,29 @@ public class GUI extends JFrame {
         repaint();
     }
 
-    public void crearComponentesFase2() {
-        botonSI = new JButton("SI");
-        botonSI.addActionListener(escucha);
-        botonSI.setPreferredSize(new Dimension(65, 65));
-        image = new ImageIcon(Objects.requireNonNull(getClass().getResource("/myProject/recursos/si.png")));
-        botonSI.setIcon(new ImageIcon(image.getImage().getScaledInstance(65, 65, Image.SCALE_SMOOTH)));
-        layoutPanelGame.gridx = 0;
-        layoutPanelGame.gridy = 2;
-        layoutPanelGame.gridwidth = 1;
-        layoutPanelGame.fill = GridBagConstraints.NONE;
-        layoutPanelGame.anchor = GridBagConstraints.LINE_END;
-        panelGame.add(botonSI, layoutPanelGame);
-
-        botonNO = new JButton("NO");
-        botonNO.addActionListener(escucha);
-        botonNO.setPreferredSize(new Dimension(65, 65));
-        image = new ImageIcon(Objects.requireNonNull(getClass().getResource("/myProject/recursos/no.png")));
-        botonNO.setIcon(new ImageIcon(image.getImage().getScaledInstance(65, 65, Image.SCALE_SMOOTH)));
-        layoutPanelGame.gridx = 1;
-        layoutPanelGame.gridy = 2;
-        layoutPanelGame.gridwidth = 1;
-        layoutPanelGame.fill = GridBagConstraints.NONE;
-        layoutPanelGame.anchor = GridBagConstraints.LINE_START;
-        panelGame.add(botonNO, layoutPanelGame);
-        //muestra palabras correctas e incorrectas de forma aleatoria
-        ArrayList<String> auxListaDePalabrasMostradas = listaDePalabrasEnJuego;
-        for (int i = 0; i < auxListaDePalabrasMostradas.size(); i++) {
-            Random random = new Random();
-            String palabraEnJLabel =
-                    auxListaDePalabrasMostradas.get(random.nextInt(auxListaDePalabrasMostradas.size()));
-            int auxIndiceJLabel = auxListaDePalabrasMostradas.indexOf(palabraEnJLabel);
-            labelPalabra = new JLabel(palabraEnJLabel);
-            panelGame.add(labelPalabra);
-            auxListaDePalabrasMostradas.remove(auxIndiceJLabel);
-        }
-        revalidate();
-        repaint();
-    }
+    /**
+     * Genera la opción de continuar a la siguiente fase del juego, crea:
+     * Jlabel  mensaje informativo
+     * Jbutton continuar: intentar completar los aciertos requeridos
+     */
     public void inicioFase2(){
-        panelGame.remove(labelNivel);
-        panelGame.remove(labelTiempo);
-        panelGame.remove(labelPalabra);
-        intro.setText(" ¡Es hora de la verdad! \n Demuestra cuánto has logrado memorizar");
+        intro.setText("\n               ¡Es hora de la verdad! \n   Demuestra cuánto has logrado\n   " +
+                "memorizar ");
+        intro.setBackground(new Color(0,0,0,130));
+        intro.setPreferredSize(new Dimension(400, 180));
+        //finFase.setFont(new Font("Impact",Font.PLAIN,28));
+        intro.setForeground(Color.WHITE);
         layoutPanelGame.gridx = 0;
         layoutPanelGame.gridy = 0;
         layoutPanelGame.gridwidth = 1;
         layoutPanelGame.fill = GridBagConstraints.NONE;
         layoutPanelGame.anchor = GridBagConstraints.CENTER;
         panelGame.add(intro,layoutPanelGame);
+
         botonContinuar= new JButton();
         botonContinuar.addActionListener(escucha);
         botonContinuar.setPreferredSize(new Dimension(200, 65));
-        image = new ImageIcon(getClass().getResource("/myProject/recursos/continuar.png"));
+        image = new ImageIcon(Objects.requireNonNull(getClass().getResource("/myProject/recursos/continuar.png")));
         botonContinuar.setIcon(new ImageIcon(image.getImage().getScaledInstance(200, 65, Image.SCALE_SMOOTH)));
         botonContinuar.setBorderPainted(false);
         botonContinuar.setContentAreaFilled(false);
@@ -368,10 +335,53 @@ public class GUI extends JFrame {
 
     }
 
+    /**
+     * Crea los componentes necesarios para intentar completar los aciertos requeridos:
+     * Jbutton opcion SI
+     * Jbutton opcion NO
+     */
+    public void crearComponentesFase2() {
+        JPanel panelOpciones= new JPanel();
+        panelOpciones.setPreferredSize(new Dimension(690,90));
+        panelOpciones.setOpaque(false);
+        layoutPanelGame.gridx = 0;
+        layoutPanelGame.gridy = 2;
+        layoutPanelGame.gridwidth = 2;
+        layoutPanelGame.fill = GridBagConstraints.NONE;
+        layoutPanelGame.anchor = GridBagConstraints.CENTER;
+        panelGame.add(panelOpciones,layoutPanelGame);
+
+        botonSI = new JButton();
+        botonSI.addActionListener(escucha);
+        botonSI.setPreferredSize(new Dimension(85, 85));
+        image = new ImageIcon(Objects.requireNonNull(getClass().getResource("/myProject/recursos/si.png")));
+        botonSI.setIcon(new ImageIcon(image.getImage().getScaledInstance(85, 85, Image.SCALE_SMOOTH)));
+        botonSI.setBorderPainted(false);
+        botonSI.setContentAreaFilled(false);
+        panelOpciones.add(botonSI);
+
+        botonNO = new JButton();
+        botonNO.addActionListener(escucha);
+        botonNO.setPreferredSize(new Dimension(85, 85));
+        image = new ImageIcon(Objects.requireNonNull(getClass().getResource("/myProject/recursos/no.png")));
+        botonNO.setIcon(new ImageIcon(image.getImage().getScaledInstance(85, 85, Image.SCALE_SMOOTH)));
+        botonNO.setBorderPainted(false);
+        botonNO.setContentAreaFilled(false);
+        panelOpciones.add(botonNO);
+        revalidate();
+        repaint();
+    }
+
+
+    /**
+     *
+     */
+    public void continuarNivel(){
+
+    }
 
     /**
      * Main process of the Java program
-     *
      * @param args Object used in order to send input data from command line when
      *             the program is executed by console.
      */
@@ -385,23 +395,35 @@ public class GUI extends JFrame {
      * inner class that extends an Adapter Class or implements Listeners used by GUI class
      */
     private class Escucha implements ActionListener {
-        private int counter1, fase;
+        private int counter, fase;
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == timer) {
-                labelTiempo.setText("00:0" + counter1);
-                counter1++;
+                labelTiempo.setText("00:0" + counter);
+                counter++;
 
-                if(counter1>5 && fase==1){
+                if(counter>5 && fase==1){
                     labelPalabra.setText(model.getPalabrasMemorizar());
-                    counter1=1;
+                    counter=1;
                 }
-                if(labelPalabra.getText()== ""){
+                if(labelPalabra.getText()== "" && fase ==1 ){
                     fase=2;
                     timer.stop();
+                    panelGame.remove(labelNivel);
+                    panelGame.remove(labelTiempo);
+                    panelGame.remove(panelPalabras);
+                    revalidate();
+                    repaint();
                     inicioFase2();
                 }
+                if(counter>7 && fase == 2){
+                    labelPalabra.setText(model.getPalabrasAleatorias());
+                    counter=1;
+                }
+                if (labelPalabra.getText()==""&& fase==2 ){
+                    continuarNivel();
 
+                }
 
 
             }
@@ -450,28 +472,32 @@ public class GUI extends JFrame {
 
             }
             if (e.getSource() == botonIniciar) {
-                //model.mostrarUsuarios();
+                panelGame.remove(intro);
                 crearComponentesPanelGame();
-                //traemos todas las palabras en juego (correctas e incorrectas)
-                listaDePalabrasEnJuego = model.getArrayDePalabrasAleatorias();
+                labelPalabra.setText(model.getPalabrasMemorizar());
                 model.jugar();
-                //model.mostrarUsuarios();
-                botonIniciar.setEnabled(false);
-                revalidate();
-                repaint();
+                botonIniciar.setVisible(false);
                 fase=1;
-                counter1 = 1;
+                counter = 1;
                 timer.start();
 
             }
             if (e.getSource() == botonSI) {
-                model.validarPalabraCorrecta(palabraVentana);
+                model.validarPalabraCorrecta(labelPalabra.getText());
             }
             if (e.getSource() == botonNO) {
-                model.validarPalabraCorrecta(palabraVentana);
+                model.validarPalabraCorrecta(labelPalabra.getText());
             }
             if (e.getSource() == botonContinuar) {
+                panelGame.remove(intro);
+                panelGame.remove(botonContinuar);
+                revalidate();
+                repaint();
+                crearComponentesPanelGame();
+                panelPalabras.setPreferredSize(new Dimension(690,260));
                 crearComponentesFase2();
+                labelPalabra.setText(model.getPalabrasAleatorias());
+                timer.start();
             }
         }
     }

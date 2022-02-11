@@ -1,5 +1,6 @@
 package myProject;
 
+import javax.swing.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
@@ -27,7 +28,8 @@ public class Model {
 
 
     String nombreUsuario, palabraEnPantalla;
-    int nivelesAprobados, nivelActual, cantPalabrasDelNivel, aciertos, flagPalabrasCorrectas, flagNivel;
+    int nivelesAprobados, nivelActual, cantPalabrasDelNivel, aciertos, flagPalabrasCorrectas, flagNivel,
+            flagPalabrasAleatorias;
     double porcentajeAciertos;
     private ArrayList<String> palabrasNivel = new ArrayList<>();
     private ArrayList<String> arraListPalabrasCorrectas = new ArrayList<>();
@@ -167,10 +169,6 @@ public class Model {
         }
     }
 
-    public ArrayList<String> getArrayDePalabrasAleatorias()
-    {
-        return arrayDePalabrasAleatorias;
-    }
 
     public String getPalabrasNivel(){
         if (flagNivel<arrayDePalabrasAleatorias.size()){
@@ -181,7 +179,6 @@ public class Model {
         }
         return palabraEnPantalla;
     }
-
 
 
 
@@ -220,16 +217,33 @@ public class Model {
         return nivelActual;
     }
 
-
+    /**
+     * Retorna una palabra que se debe memorizar, la extrae del arrayList de Palabras Correctas
+      * @return String
+     */
     public String getPalabrasMemorizar() {
         String palabraMemorizar="";
         if (flagPalabrasCorrectas < arraListPalabrasCorrectas.size()){
             palabraMemorizar = arraListPalabrasCorrectas.get(flagPalabrasCorrectas);
             flagPalabrasCorrectas++;
-            //System.out.println("esta es palabra a memorizar: "+palabraMemorizar);
         }
 
         return palabraMemorizar;
+    }
+
+    /**
+     * Retorna una palabra Aleatoria para la fase 2 del juego,puede ser una palabra correcta o errónea
+     * @return String
+     */
+
+    public String getPalabrasAleatorias() {
+        String palabraAleatoria = "";
+        if(flagPalabrasAleatorias<arrayDePalabrasAleatorias.size()){
+            palabraAleatoria= arrayDePalabrasAleatorias.get(flagPalabrasAleatorias);
+            int auxIndice = arrayDePalabrasAleatorias.indexOf(palabraAleatoria);
+            arrayDePalabrasAleatorias.remove(auxIndice);
+        }
+        return palabraAleatoria;
     }
 
 
@@ -239,38 +253,11 @@ public class Model {
     public void jugar() {
         //create a switch sentence
         switch (nivelActual) {
-            case 1 ->
-                    {
-
-                        System.out.println("nivel 1");
-
-                        System.out.println("**Correctas**");
-                        for (int i = 0; i <10;i++)
-                        {
-                            System.out.println(arraListPalabrasCorrectas.get(i));
-                        }
-                        System.out.println("**Incorrectas**");
-                        for (int i = 0; i <10;i++)
-                        {
-                            System.out.println(arraListPalabrasIncorrectas.get(i));
-                        }
-
-                       System.out.println("mostrar palabras: "+arrayDePalabrasAleatorias.size());
-                        //por consola total de palabras a mostrar
-                        for (String s : arrayDePalabrasAleatorias) {
-                            System.out.println(s);
-                        }
-
-
-
-                       // validarPalabraCorrecta();
+            case 1 -> {System.out.println("nivel 1");
+                        // validarPalabraCorrecta();
                         //determinarAciertos
-
                         //vaciamos palabras correctas e incorrectas
-                        //borrarArreglosDePalabras();
-
-
-
+                //borrarArreglosDePalabras();
                     }
             case 2 -> {
 
@@ -283,6 +270,23 @@ public class Model {
             case 8 -> System.out.println("nivel 8");
             case 9 -> System.out.println("nivel 9");
             case 10 -> System.out.println("nivel 10");
+        }
+
+        System.out.println("**Correctas**");
+        for (int i = 0; i <10;i++)
+        {
+            System.out.println(arraListPalabrasCorrectas.get(i));
+        }
+        System.out.println("**Incorrectas**");
+        for (int i = 0; i <10;i++)
+        {
+            System.out.println(arraListPalabrasIncorrectas.get(i));
+        }
+
+        System.out.println("mostrar palabras: "+arrayDePalabrasAleatorias.size());
+        //por consola total de palabras a mostrar
+        for (String s : arrayDePalabrasAleatorias) {
+            System.out.println(s);
         }
 
     }

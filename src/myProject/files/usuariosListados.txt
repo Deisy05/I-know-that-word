@@ -1,16 +1,1 @@
-cat: 0
-dei: 0
-kuku: 0
-pop: 0
-poi: 0
-poio: 0
-plop: 0
-plopl: 0
-mol: 0
-pl: 0
-kkkk: 0
-lopi: 0
-ooo: 0
-plpl: 0
-popo: 0
-lopl: 0
+zazaza: 0
