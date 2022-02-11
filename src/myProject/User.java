@@ -67,6 +67,7 @@ public class User {
     public void registrarJugador()
     {
         fileManager.escribirTexto(userName + ": " + 0);
+        listaDeJugadores.add(userName+ ": "+ 0);
     }
 
 

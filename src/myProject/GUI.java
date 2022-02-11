@@ -25,7 +25,7 @@ public class GUI extends JFrame {
     //Información en el botón de ayuda, en el panel del juego.
     private static final String INFO2 = " Puedes salir en cualquier momento.\n"
             + "Sin embargo, si la partida no ha terminado la próxima vez que ingreses se iniciará la misma. ";
-    private JPanel panelInicio, panelGame, panelBotones, panelPalabras, panelMensaje;
+    private JPanel panelInicio, panelGame, panelBotones, panelPalabras,panelOpciones, panelMensaje;
     private JTextField entradaUsuario;
     private JTextArea intro;
     private JButton botonOK, botonHelp, botonExit, botonIniciar, botonInstrucciones, botonSI, botonNO, botonContinuar;
@@ -341,7 +341,7 @@ public class GUI extends JFrame {
      * Jbutton opcion NO
      */
     public void crearComponentesFase2() {
-        JPanel panelOpciones= new JPanel();
+        panelOpciones= new JPanel();
         panelOpciones.setPreferredSize(new Dimension(690,90));
         panelOpciones.setOpaque(false);
         layoutPanelGame.gridx = 0;
@@ -372,11 +372,32 @@ public class GUI extends JFrame {
         repaint();
     }
 
-
     /**
      *
      */
     public void continuarNivel(){
+        String textoFinal="";
+        int aciertos= model.getAciertos();
+        int porcentaje= model.porcentajeAciertos();
+        model.setNivelesAprobados();
+        if (model.getApruebaNivel()){
+            textoFinal= "\n               Has superado el nivel. \n   Número de aciertos: " +aciertos+
+                    "\n   porcentaje: " +porcentaje+"%";
+        }else{
+            textoFinal= "\n               No has superado el nivel. \n   Número de aciertos: " +aciertos+
+                    "\n   porcentaje: " +porcentaje+"%";
+        }
+        intro.setText(textoFinal);
+        layoutPanelGame.gridx = 0;
+        layoutPanelGame.gridy = 0;
+        layoutPanelGame.gridwidth = 1;
+        layoutPanelGame.fill = GridBagConstraints.NONE;
+        layoutPanelGame.anchor = GridBagConstraints.CENTER;
+        panelGame.add(intro,layoutPanelGame);
+        botonIniciar.setVisible(true);
+        System.out.println(textoFinal);
+        revalidate();
+        repaint();
 
     }
 
@@ -402,29 +423,32 @@ public class GUI extends JFrame {
                 labelTiempo.setText("00:0" + counter);
                 counter++;
 
-                if(counter>5 && fase==1){
-                    labelPalabra.setText(model.getPalabrasMemorizar());
-                    counter=1;
+                if(fase==1){
+                    if(counter>5){
+                        labelPalabra.setText(model.getPalabrasMemorizar());
+                        counter=1;
+                    }
+                    if(Objects.equals(labelPalabra.getText(), "")){
+                        timer.stop();
+                        panelGame.removeAll();
+                        revalidate();
+                        repaint();
+                        inicioFase2();
+                    }
                 }
-                if(labelPalabra.getText()== "" && fase ==1 ){
-                    fase=2;
-                    timer.stop();
-                    panelGame.remove(labelNivel);
-                    panelGame.remove(labelTiempo);
-                    panelGame.remove(panelPalabras);
-                    revalidate();
-                    repaint();
-                    inicioFase2();
+                if(fase==2){
+                    if(counter>7){
+                        labelPalabra.setText(model.getPalabrasAleatorias());
+                        counter=1;
+                    }
+                    if (Objects.equals(labelPalabra.getText(), "")){
+                        timer.stop();
+                        panelGame.removeAll();
+                        revalidate();
+                        repaint();
+                        continuarNivel();
+                    }
                 }
-                if(counter>7 && fase == 2){
-                    labelPalabra.setText(model.getPalabrasAleatorias());
-                    counter=1;
-                }
-                if (labelPalabra.getText()==""&& fase==2 ){
-                    continuarNivel();
-
-                }
-
 
             }
             if (e.getSource() == botonExit) {
@@ -447,12 +471,12 @@ public class GUI extends JFrame {
                     if (model.validarEntradaTexto(nombreJugador)) {
                         opcionHelp = true;
                         remove(panelInicio);
+                        //busca el usuario y determina su nivel
+                        model.buscarElUsuario(nombreJugador);
                         crearPanelGame();
                         revalidate();
                         repaint();
 
-                        //busca el usuario y determina su nivel
-                        model.buscarElUsuario(nombreJugador);
 
                     } else {
                         JOptionPane.showMessageDialog(null, "No se aceptan caracteres especiales");
@@ -484,13 +508,22 @@ public class GUI extends JFrame {
             }
             if (e.getSource() == botonSI) {
                 model.validarPalabraCorrecta(labelPalabra.getText());
+                labelPalabra.setText(model.getPalabrasAleatorias());
+                counter=1;
+                revalidate();
+                repaint();
             }
             if (e.getSource() == botonNO) {
-                model.validarPalabraCorrecta(labelPalabra.getText());
+                model.validarPalabraIncorrecta(labelPalabra.getText());
+                labelPalabra.setText(model.getPalabrasAleatorias());
+                counter=1;
+                revalidate();
+                repaint();
             }
             if (e.getSource() == botonContinuar) {
                 panelGame.remove(intro);
                 panelGame.remove(botonContinuar);
+                fase=2;
                 revalidate();
                 repaint();
                 crearComponentesPanelGame();

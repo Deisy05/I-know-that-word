@@ -18,18 +18,16 @@ public class Model {
 
     FileManager fileManager = new FileManager();
 
-    //private ArrayList <User> usuarioList= new ArrayList<User>(); //los usuarios registrados
     private ArrayList <String> palabrasAMostrar = new ArrayList<>();
     private String auxPalabraC, auxPalabraI;
     private int nivelUsuario, errores, indiceUsuario;
-    private boolean auxExisteUsuario;
+    private boolean flagNivel;
     private User miUsuario;
 
 
 
-    String nombreUsuario, palabraEnPantalla;
-    int nivelesAprobados, nivelActual, cantPalabrasDelNivel, aciertos, flagPalabrasCorrectas, flagNivel,
-            flagPalabrasAleatorias;
+    String nombreUsuario;
+    int nivelesAprobados, nivelActual, cantPalabrasDelNivel, aciertos, flagPalabrasCorrectas,flagPalabrasAleatorias;
     double porcentajeAciertos;
     private ArrayList<String> palabrasNivel = new ArrayList<>();
     private ArrayList<String> arraListPalabrasCorrectas = new ArrayList<>();
@@ -48,7 +46,7 @@ public class Model {
 
 
     /**
-     * Este método restringe la entra de datos en el Jtexfield a solo carácteres sin signos especiales
+     * Este método restringe la entra de datos en el Jtexfield a carácteres sin signos especiales
      */
     public boolean validarEntradaTexto(String entrada) {
         boolean valido = true;
@@ -77,63 +75,33 @@ public class Model {
             nivelesAprobados = miUsuario.getNivelDelJugador();
         }else{
             miUsuario.registrarJugador();
-            nuevoUsuario = true;
+            nuevoUsuario = true;//-------------------------------------------------------no se si es util
             nivelesAprobados = 0;
         }
-        aciertos=0;
+
         flagPalabrasCorrectas =0;
-        flagNivel=0;
-        setNivelActual();
+        flagNivel=false;
         if (nivelesAprobados<8) {
             nivelActual = nivelesAprobados + 1;
         }else {
             nivelActual = nivelesAprobados;
         }
+        setNivelActual();
+
     }
 
 
     private void setNivelActual()
     {
         aciertos=0;
-        nivelActual = nivelesAprobados+1;
+        if(getApruebaNivel()){
+            nivelActual++;
+        }
         asignarCantidadPalabrasPorNivel();
-        palabraEnPantalla = "";
-        arraListPalabrasCorrectas = diccionario.generarPalabrasCorrectas(cantPalabrasDelNivel /2);
-        arraListPalabrasIncorrectas = diccionario.generarPalabrasIncorrectas(cantPalabrasDelNivel /2);
-
+        asignarPorcentajesPorNivel();
+        arraListPalabrasCorrectas = diccionario.generarPalabrasCorrectas(cantPalabrasDelNivel/2);
+        arraListPalabrasIncorrectas = diccionario.generarPalabrasIncorrectas(cantPalabrasDelNivel/2);
         generarArrayDePalabrasAleatoriaDelNivel();
-    }
-
-    private void setNivelesAprobados(){
-        if(aciertos >= cantPalabrasDelNivel *porcentajeAciertos){
-            nivelesAprobados= user.setNivelDelJugador();
-            setNivelActual();
-            flagNivel=0;
-            flagPalabrasCorrectas=0;
-        }
-        else{
-            flagNivel=0;
-            flagPalabrasCorrectas=0;
-            asignarCantidadPalabrasPorNivel();
-            palabraEnPantalla="";
-            arraListPalabrasCorrectas = diccionario.generarPalabrasCorrectas(cantPalabrasDelNivel /2);
-            arraListPalabrasIncorrectas = diccionario.generarPalabrasIncorrectas(cantPalabrasDelNivel /2);
-            palabrasNivel = new ArrayList<>();
-            generarArrayDePalabrasAleatoriaDelNivel();
-        }
-
-    }
-
-    private void asignarPorcentajesPorNivel(){
-        switch (nivelActual){
-            case 1, 2 -> porcentajeAciertos=0.7;
-            case 3-> porcentajeAciertos=0.75;
-            case 4, 5 -> porcentajeAciertos=0.8;
-            case 6-> porcentajeAciertos=0.85;
-            case 7, 8 -> porcentajeAciertos=0.9;
-            case 9-> porcentajeAciertos=0.95;
-            case 10->porcentajeAciertos=1;
-        }
     }
 
     private void asignarCantidadPalabrasPorNivel(){
@@ -170,52 +138,38 @@ public class Model {
     }
 
 
-    public String getPalabrasNivel(){
-        if (flagNivel<arrayDePalabrasAleatorias.size()){
-            palabraEnPantalla = arrayDePalabrasAleatorias.get(flagNivel);
-            flagNivel++;
-        }else{
-            setNivelesAprobados();
+    private void asignarPorcentajesPorNivel(){
+        switch (nivelActual){
+            case 1, 2 -> porcentajeAciertos=0.7;
+            case 3-> porcentajeAciertos=0.75;
+            case 4, 5 -> porcentajeAciertos=0.8;
+            case 6-> porcentajeAciertos=0.85;
+            case 7, 8 -> porcentajeAciertos=0.9;
+            case 9-> porcentajeAciertos=0.95;
+            case 10->porcentajeAciertos=1;
         }
-        return palabraEnPantalla;
     }
 
 
+    public void validarPalabraCorrecta(String palabra){
 
-    public boolean validarPalabraCorrecta(String palabra){
-
-        boolean perteneceCorrecta= false;
         for (String elementoListCorrecta : arraListPalabrasCorrectas) {
             if (elementoListCorrecta.equals(palabra)) {
-                perteneceCorrecta = true;
+                aciertos++;
                 break;
             }
         }
-        return perteneceCorrecta;
     }
 
-
-    public void setAciertos( boolean seleccionEnGUI){
-        boolean selccionCorrecta = validarPalabraCorrecta(palabraEnPantalla);
-        if (seleccionEnGUI == selccionCorrecta){
-            aciertos++;
+    public void validarPalabraIncorrecta(String palabra){
+        for (String elementoListIncorrecta : arraListPalabrasIncorrectas) {
+            if (elementoListIncorrecta.equals(palabra)) {
+                aciertos++;
+                break;
+            }
         }
-    }//si no responde nada?
-
-
-    public int  getAciertos(){
-        return aciertos;
     }
 
-
-    public boolean isNuevoUsuario() {
-        return nuevoUsuario;
-    }
-
-
-    public int getNivelActual() {
-        return nivelActual;
-    }
 
     /**
      * Retorna una palabra que se debe memorizar, la extrae del arrayList de Palabras Correctas
@@ -246,8 +200,40 @@ public class Model {
         return palabraAleatoria;
     }
 
+    public int  getAciertos(){
+        return aciertos;
+    }
 
+    public boolean getApruebaNivel(){
+        return flagNivel;
+    }
+    public int porcentajeAciertos(){ return ((aciertos*100)/cantPalabrasDelNivel);}
 
+    public int getNivelActual() {
+        return nivelActual;
+    }
+
+    public void setNivelesAprobados(){
+        borrarArreglosDePalabras();
+        if(aciertos >= cantPalabrasDelNivel *porcentajeAciertos){
+            nivelesAprobados= miUsuario.setNivelDelJugador();
+            flagNivel=true;
+            setNivelActual();
+            flagPalabrasCorrectas=0;
+        }
+        else{
+            flagNivel=false;
+            flagPalabrasCorrectas=0;
+            setNivelActual();
+        }
+
+    }
+
+    private void borrarArreglosDePalabras() {
+        arraListPalabrasCorrectas.clear();
+        arraListPalabrasIncorrectas.clear();
+        arrayDePalabrasAleatorias.clear();
+    }
 
  //utilizamos lo creado buscarElUsuario
     public void jugar() {
@@ -259,7 +245,7 @@ public class Model {
                         //vaciamos palabras correctas e incorrectas
                 //borrarArreglosDePalabras();
                     }
-            case 2 -> {
+            case 2 -> { System.out.println("nivel 2");
 
             }
             case 3 -> System.out.println("nivel 3");
@@ -273,16 +259,13 @@ public class Model {
         }
 
         System.out.println("**Correctas**");
-        for (int i = 0; i <10;i++)
-        {
-            System.out.println(arraListPalabrasCorrectas.get(i));
+        for (String arraListPalabrasCorrecta : arraListPalabrasCorrectas) {
+            System.out.println(arraListPalabrasCorrecta);
         }
         System.out.println("**Incorrectas**");
-        for (int i = 0; i <10;i++)
-        {
-            System.out.println(arraListPalabrasIncorrectas.get(i));
+        for (String arraListPalabrasIncorrecta : arraListPalabrasIncorrectas) {
+            System.out.println(arraListPalabrasIncorrecta);
         }
-
         System.out.println("mostrar palabras: "+arrayDePalabrasAleatorias.size());
         //por consola total de palabras a mostrar
         for (String s : arrayDePalabrasAleatorias) {
@@ -292,18 +275,6 @@ public class Model {
     }
 
 
-    private void borrarArreglosDePalabras() {
-        arraListPalabrasCorrectas.clear();
-        arraListPalabrasIncorrectas.clear();
-    }
-
-    private void determinarAciertos() {
-
-    }
-
-    private void reescribirNivel() {
-
-    }
 
 
 
