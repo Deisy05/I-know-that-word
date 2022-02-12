@@ -5,11 +5,13 @@ import java.util.Objects;
 import java.util.Random;
 
 /**
+ * This class is designed in order to determine the correct and incorrect words of the game from a .txt file
  * @author Deisy Catalina Melo - deisy.melo@correounivalle.edu.co
  *         Carlos Andrés Borja - borja.carlos@correounivalle.edu.co
- * @version @version v.1.0.0 date: 02/02/2022
+ * @version v.1.0.2 date: 12/02/2022
  */
-public class Diccionario {
+public class Diccionario
+{
 
     private FileManager fileManager;
     private ArrayList<String> miDiccionario;
@@ -20,42 +22,47 @@ public class Diccionario {
     /**
      * Constructor of Diccionario class
      */
-    public Diccionario() {
+    public Diccionario()
+    {
 
-        miDiccionario = new ArrayList<>();
-        palabrasCorrectas = new ArrayList<>();
-        palabrasIncorrectas = new ArrayList<>();
+        miDiccionario = new ArrayList<>();          // ArrayList of total words is declared
+        palabrasCorrectas = new ArrayList<>();     // ArrayList of correct words is declared
+        palabrasIncorrectas = new ArrayList<>();  // ArrayList of incorrect words is declared
 
         fileManager = new FileManager();
+        //we generated the ArrayList called myDictionary with the list of all the words (200)
         miDiccionario = fileManager.leerArchivos("miListaDePalabras");
 
     }
 
     /**
-     * generar lista de palabras correctas del nivel
-     * @param nroPalabras cantidad de palabras correctas
-     * @return ArrayList<String> palabrasCorrectas
+     * This method generates the list of correct words of the level
+     * @param nroPalabras number of correct words
+     * @return ArrayList<String>
      */
-    public ArrayList<String> generarPalabrasCorrectas(int nroPalabras) {
+    public ArrayList<String> generarPalabrasCorrectas(int nroPalabras)
+    {
         return generadorDePalabras(nroPalabras, palabrasCorrectas);
     }
 
     /**
-     * generar lista de palabras incorrectas del nivel
-     * @param nroPalabras cantidad de palabras correctas
-     * @return ArrayList palabrasIncorrectas
+     * This method generates the list of incorrect words of the level
+     * @param nroPalabras number of incorrect words
+     * @return ArrayList<String>
      */
-    public ArrayList<String> generarPalabrasIncorrectas(int nroPalabras) {
+    public ArrayList<String> generarPalabrasIncorrectas(int nroPalabras)
+    {
         return generadorDePalabras(nroPalabras, palabrasIncorrectas);
     }
 
     /**
-     *
-     * @param nroPalabras
-     * @param misPalabras
+     * This method selects a specified number of random words from a list
+     * @param nroPalabras number of words according to the level
+     * @param misPalabras ArrayList of words
      * @return ArrayList<String>
      */
-    private ArrayList<String> generadorDePalabras(int nroPalabras, ArrayList<String> misPalabras) {
+    private ArrayList<String> generadorDePalabras(int nroPalabras, ArrayList<String> misPalabras)
+    {
         for (int i = 0; i < nroPalabras; i++)
         {
             Random random = new Random();
@@ -65,68 +72,4 @@ public class Diccionario {
         }
         return misPalabras;
     }
-
-    /**
-     * determinar si existe un jugador
-     * @return boolean existeUsuario
-     */
-//    public boolean determinarExistenciaJugador() {
-//        if (buscarJugador()!=-1)
-//            existeUsuario = true;
-//        return existeUsuario;
-//    }
-
-    /**
-     * ver si un jugador está registrado
-     * @return posicion
-     */
-//    private int buscarJugador(){
-//        int posicion = -1;
-//        for (int i = 0; i < listaDeJugadores.size() && !Objects.equals(listaDeJugadores.get(i), " "); i++) {
-//            String auxJugador = listaDeJugadores.get(i).substring(0, listaDeJugadores.get(i).lastIndexOf(":"));
-//            if (auxJugador.equals(userName)){
-//                posicion=i;
-//                break;
-//
-//            }
-//
-//        }
-//        return posicion;
-//    }
-
-
-    /**
-     * registrar un jugador nuevo
-     */
-//    public void registrarJugador()
-//    {
-//        fileManager.escribirTexto(userName + ": " + 0);
-//    }
-//
-//
-//
-//    /**
-//     * nivel registrado del usuario
-//     * @return int nivel
-//     */
-//    public int getNivelDelJugador(){
-//        String usuario= listaDeJugadores.get(buscarJugador());
-//        String nivelesEnString=usuario.substring(usuario.lastIndexOf(":")+2);
-//        return Integer.parseInt(nivelesEnString);
-//    }
-//
-//    /**
-//     * reescribir el nivel actual
-//     * @return the new level of the game
-//     */
-//    public int setNivelDelJugador(){
-//        if(getNivelDelJugador()<10){
-//            fileManager.actualizarNivel(buscarJugador(),getNivelDelJugador()+1);
-//        }else{
-//            fileManager.actualizarNivel(buscarJugador(),0);
-//        }
-//        return getNivelDelJugador();
-//    }
-
-
 }

@@ -1,1 +1,6 @@
-luis: 6
+kl: 0
+s: 1
+ass: 0
+juan: 0
+milo: 4
+e: 0

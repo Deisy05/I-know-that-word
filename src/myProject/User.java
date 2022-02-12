@@ -5,11 +5,13 @@ import java.util.Objects;
 import java.util.Random;
 
 /**
+ * This class is created in order to manipulate the user, his name and level
  * @author Deisy Catalina Melo - deisy.melo@correounivalle.edu.co
  *         Carlos Andrés Borja - borja.carlos@correounivalle.edu.co
- * @version @version v.1.0.0 date: 02/02/2022
+ * @version @version v.1.0.3 date: 12/02/2022
  */
-public class User {
+public class User
+{
     private FileManager fileManager;
     private ArrayList<String> listaDeJugadores;
     private int nivel;
@@ -19,35 +21,45 @@ public class User {
     /**
      * constructor of User class
      */
-    public User (String playerName){
+    public User (String playerName)
+    {
 
         fileManager = new FileManager();
         listaDeJugadores = new ArrayList<>();
+        //we generated the ArrayList called listaDeJugadores with the list of all the users in usuariosListados.txt file
         listaDeJugadores = fileManager.leerArchivos("miListaDeUsuarios");
         userName = playerName;
         existeUsuario = false;
 
     }
-    public ArrayList<String> getListaDeJugadores() {
+
+    /**
+     * Getter method for player list
+     * @return ArrayList<String>
+     */
+    public ArrayList<String> getListaDeJugadores()
+    {
         return listaDeJugadores;
     }
 
 
     /**
-     * determinar si existe un jugador
+     * Method to determine if a player exists
      * @return boolean existeUsuario
      */
-    public boolean determinarExistenciaJugador() {
+    public boolean determinarExistenciaJugador()
+    {
         if (buscarJugador()!=-1)
             existeUsuario = true;
         return existeUsuario;
     }
 
     /**
-     * ver si un jugador está registrado
+     * Method to see if a player is registered and return his index
      * @return posicion
      */
-    private int buscarJugador(){
+    private int buscarJugador()
+    {
         int posicion = -1;
         for (int i = 0; i < listaDeJugadores.size() && !Objects.equals(listaDeJugadores.get(i), " "); i++) {
             String auxJugador = listaDeJugadores.get(i).substring(0, listaDeJugadores.get(i).lastIndexOf(":"));
@@ -61,32 +73,33 @@ public class User {
         return posicion;
     }
 
-
+//----------------------->revisar cambios
     /**
-     * registrar un jugador nuevo
+     * Method to register a new player in usuariosListados.txt
      */
     public void registrarJugador()
     {
         fileManager.escribirTexto(userName + ": " + 0);
+        listaDeJugadores.add(userName+ ": "+ 0);
     }
 
-
-
     /**
-     * nivel registrado del usuario
+     * Getter method for the registered level of the user
      * @return int nivel
      */
-    public int getNivelDelJugador(){
+    public int getNivelDelJugador()
+    {
         String usuario= listaDeJugadores.get(buscarJugador());
         String nivelesEnString=usuario.substring(usuario.lastIndexOf(":")+2);
         return Integer.parseInt(nivelesEnString);
     }
 
     /**
-     * reescribir el nivel actual
-     * @return the new level of the game
+     * Method to update and rewrite the current level in usuariosListados.txt file
+     * @return int - the new level of the user
      */
-    public int setNivelDelJugador(){
+    public int setNivelDelJugador()
+    {
         if(getNivelDelJugador()<10){
             fileManager.actualizarNivel(buscarJugador(),getNivelDelJugador()+1);
         }else{
@@ -95,25 +108,13 @@ public class User {
         return getNivelDelJugador();
     }
 
-
-
-
-    public String getNombre(){ return userName; }
-
-//    public int getNivelDelJugador(){ return nivel; }
-//
-//    public void setNivelDelJugador(int nivelJugador){
-//
-//        nivel=nivelJugador;
-//    }
-
     /**
-     * Este método registra los datos del usuario en el archivo .txt
+     * Getter method for the user name
+     * @return userName
      */
-
-    public void guardar(){
-        fileManager.escribirTexto(userName);
-        fileManager.escribirTexto(String.valueOf(nivel));
+    public String getNombre()
+    {
+        return userName;
     }
 
 }
