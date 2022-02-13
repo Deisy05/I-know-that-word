@@ -9,28 +9,27 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 
-
 /**
  * This class is designed in order to view Model class
+ *
  * @author Deisy Catalina Melo - deisy.melo@correounivalle.edu.co
  *         Carlos Andrés Borja - borja.carlos@correounivalle.edu.co
  * @version v.1.0.3 date: 12/02/2022
  */
-public class GUI extends JFrame
-{
+public class GUI extends JFrame {
 
     private Header headerProject;
     private Model model;
     private Escucha escucha;
 
-    //Information on the help button, in the home panel: when the user is asked
+    // Information on the help button, in the home panel: when the user is asked
     private static final String INFO1 = "Con el nombre de usuario podremos guardar tus avances\n Ingresa sólo " +
             "caracteres en minúsculas, evita el uso de la Ñ y/o espacios en blanco";
-    //Information on the help button, in the game panel.
+    // Information on the help button, in the game panel.
     private static final String INFO2 = " Puedes salir en cualquier momento.\n"
             + "Sin embargo, si la partida no ha terminado la próxima vez que ingreses se iniciará la misma. ";
 
-    private JPanel panelInicio, panelGame, panelBotones, panelPalabras,panelOpciones, panelMensaje;
+    private JPanel panelInicio, panelGame, panelBotones, panelPalabras, panelOpciones, panelMensaje;
     private JTextField entradaUsuario;
     private JTextArea intro;
     private JButton botonOK, botonHelp, botonExit, botonIniciar, botonInstrucciones, botonSI, botonNO, botonContinuar;
@@ -39,16 +38,15 @@ public class GUI extends JFrame
     private boolean opcionHelp;
     private String nombreJugador;
     private Timer timer;
-    private GridBagConstraints constraints, layoutPanelGame; //JFrame and panelGame layout component
+    private GridBagConstraints constraints, layoutPanelGame; // JFrame and panelGame layout component
 
     /**
      * Constructor of GUI class
      */
-    public GUI()
-    {
+    public GUI() {
         this.setContentPane(new Canvas(1)); // to Paint the background image of the Frame
         initGUI();
-        //Default JFrame configuration
+        // Default JFrame configuration
         this.setUndecorated(true);
         this.pack();
         this.setResizable(true);
@@ -60,8 +58,7 @@ public class GUI extends JFrame
      * This method is used to set up the default JComponent Configuration,
      * create Listener and control Objects used for the GUI class
      */
-    private void initGUI()
-    {
+    private void initGUI() {
 
         // Set up JFrame Container's Layout
         this.setLayout(new GridBagLayout());
@@ -110,7 +107,8 @@ public class GUI extends JFrame
         constraints.anchor = GridBagConstraints.LINE_END;
         this.add(botonExit, constraints);
 
-        //This is the panel that contains the user label, the text input and the confirmation button
+        // This is the panel that contains the user label, the text input and the
+        // confirmation button
         panelInicio = new JPanel(new GridBagLayout()); // Set up JPanel Container's Layout
         panelInicio.setPreferredSize(new Dimension(900, 500));
         panelInicio.setOpaque(false);
@@ -127,12 +125,12 @@ public class GUI extends JFrame
 
     /**
      * This method creates and adds to the home panel the components:
-     * 1) JLabel labelUsername: label to indicate what you want the user to enter in the text box
+     * 1) JLabel labelUsername: label to indicate what you want the user to enter in
+     * the text box
      * 2) JTextField entradaUsuario: component for text input
      * 3) JButton botonOk: confirmation button after entering username
      */
-    public void componentesDelPanelInicio()
-    {
+    public void componentesDelPanelInicio() {
         // Layout component
         GridBagConstraints layoutPanelInicio = new GridBagConstraints();
         // Label for user
@@ -175,16 +173,16 @@ public class GUI extends JFrame
         repaint();
     }
 
-
     /**
-     * This method returns an object of type Icon. It is used for the help button icon
+     * This method returns an object of type Icon. It is used for the help button
+     * icon
+     *
      * @param reference
      * @param width
      * @param height
      * @return Icon
      */
-    public Icon iconoMessage(String reference, int width, int height)
-    {
+    public Icon iconoMessage(String reference, int width, int height) {
         image = new ImageIcon(Objects.requireNonNull(getClass().getResource(reference)));
         image = new ImageIcon(image.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
         return image;
@@ -196,10 +194,9 @@ public class GUI extends JFrame
      * 2) JTextArea intro: start message
      * 3) Invokes the method to add the instructions and play buttons
      */
-    public void crearPanelGame()
-    {
-        panelGame = new Canvas(2);              // Create the panel with the image
-        panelGame.setLayout(new GridBagLayout());    // Set up JPanel Container's Layout
+    public void crearPanelGame() {
+        panelGame = new Canvas(2); // Create the panel with the image
+        panelGame.setLayout(new GridBagLayout()); // Set up JPanel Container's Layout
         layoutPanelGame = new GridBagConstraints(); // panelGame layout component
         panelGame.setPreferredSize(new Dimension(700, 400));
         constraints.gridx = 0;
@@ -230,12 +227,12 @@ public class GUI extends JFrame
     }
 
     /**
-     * This method creates the panel on which the game buttons are located and the following components:
+     * This method creates the panel on which the game buttons are located and the
+     * following components:
      * 1) Instruction Button
      * 2) Start Game Button
      */
-    public void crearPanelBotonesInicio()
-    {
+    public void crearPanelBotonesInicio() {
 
         panelBotones = new JPanel();
         panelBotones.setPreferredSize(new Dimension(900, 100));
@@ -267,13 +264,12 @@ public class GUI extends JFrame
     }
 
     /**
-     *  Create the following components to start the game:
-     *  1) Time label
-     *  2) Level label
-     *  2) Tag words to be memorized
+     * Create the following components to start the game:
+     * 1) Time label
+     * 2) Level label
+     * 2) Tag words to be memorized
      */
-    public void crearComponentesPanelGame()
-    {
+    public void crearComponentesPanelGame() {
 
         labelNivel = new JLabel("NIVEL: " + Integer.toString(model.getNivelActual()));
         labelNivel.setFont(new Font("Impact", Font.PLAIN, 24));
@@ -318,12 +314,12 @@ public class GUI extends JFrame
     }
 
     /**
-     * This method generates the option to continue to the next phase of the game and create:
+     * This method generates the option to continue to the next phase of the game
+     * and create:
      * 1) JLabel informative message
      * 2) JButton continue: try to complete the required hits
      */
-    public void inicioFase2()
-    {
+    public void inicioFase2() {
         intro.setText("\n               ¡Es hora de la verdad! \n   Demuestra cuánto has logrado\n   " +
                 "memorizar ");
         intro.setBackground(new Color(0, 0, 0, 130));
@@ -354,7 +350,8 @@ public class GUI extends JFrame
     }
 
     /**
-     * Create the necessary components to try to complete the hits required, these are:
+     * Create the necessary components to try to complete the hits required, these
+     * are:
      * 1) JButton option YES
      * 2) JButton option NO
      */
@@ -421,20 +418,23 @@ public class GUI extends JFrame
 
     /**
      * Main process of the Java program
+     *
      * @param args Object used in order to send input data from command line when
      *             the program is executed by console.
      */
-    public static void main(String[] args){
+    public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             GUI miProjectGUI = new GUI();
         });
     }
 
     /**
-     * Inner class that extends an Adapter Class or implements Listeners used by GUI class
+     * Inner class that extends an Adapter Class or implements Listeners used by GUI
+     * class
      */
     private class Escucha implements ActionListener {
-        private int counter, fase;
+        private int counter = 0;
+        private int fase;
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -471,14 +471,20 @@ public class GUI extends JFrame
 
             }
             if (e.getSource() == botonExit) {
+
                 if (entradaUsuario.getText().isEmpty()) {
                     System.exit(0);
                 } else if (!model.validarEntradaTexto(entradaUsuario.getText())) {
+//                    if(/*no aparece registrado*/){
+//                        JOptionPane.showMessageDialog(null, "No se permite guardar partida, usuario NO registrado");
+//                     }
                     JOptionPane.showMessageDialog(null, "No se permite guardar partida, usuario NO válido");
                 } else {
-                    model.guardaPartidaAlSalir();
+                    //model.guardaPartidaAlSalir();
                     System.exit(0);
                 }
+                // if()
+
             }
             if (e.getSource() == botonHelp) {
                 if (!opcionHelp) {
@@ -492,12 +498,14 @@ public class GUI extends JFrame
 
                 if (!entradaUsuario.getText().isEmpty()) {
                     nombreJugador = entradaUsuario.getText();
+
                     // We validate that it does not have special characters
                     if (model.validarEntradaTexto(nombreJugador)) {
                         opcionHelp = true;
                         remove(panelInicio);
                         // We search the user and determine his level
                         model.buscarElUsuario(nombreJugador);
+                        //model.guardaPartidaAlSalir();
                         crearPanelGame();
                         revalidate();
                         repaint();
@@ -520,11 +528,13 @@ public class GUI extends JFrame
                 JOptionPane.showMessageDialog(null, labelInstrucciones, null, JOptionPane.PLAIN_MESSAGE);
 
             }
-            if (e.getSource() == botonIniciar) {
+            if (e.getSource() == botonIniciar)
+            {
                 panelGame.remove(intro);
                 crearComponentesPanelGame();
                 labelPalabra.setText(model.getPalabrasMemorizar());
-                model.jugar();
+                model.jugar();//solo por consola muestra pruebas
+                //model.guardaPartidaAlSalir();
                 botonIniciar.setVisible(false);
                 fase = 1;
                 counter = 1;
@@ -546,6 +556,7 @@ public class GUI extends JFrame
                 repaint();
             }
             if (e.getSource() == botonContinuar) {
+                //model.guardaPartidaAlSalir();
                 panelGame.remove(intro);
                 panelGame.remove(botonContinuar);
                 fase = 2;

@@ -98,7 +98,8 @@ public class FileManager
             usuariosActualizados.add(posicion, usuarioActualizado);
             fileWriter = new FileWriter(usuariosListados, false);
             output = new BufferedWriter(fileWriter);
-            for (String usuariosActualizado : usuariosActualizados) {
+            for (String usuariosActualizado : usuariosActualizados)
+            {
                 output.write(usuariosActualizado);
                 output.newLine();
 

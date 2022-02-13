@@ -21,6 +21,7 @@ public class Model
     private String auxPalabraC, auxPalabraI;
     private int nivelUsuario, errores, indiceUsuario;
     private boolean flagNivel;
+
     private User miUsuario;
 
 
@@ -102,7 +103,7 @@ public class Model
     }
 
     /**
-     * This method sets all the words that will be in the game per level (corrects and incorrects)
+     * This method sets all the words that will be in the game per level (corrects and incorrect)
      */
     private void setNivelActual()
     {
@@ -267,11 +268,12 @@ public class Model
     {
         //create a switch sentence
         switch (nivelActual) {
-            case 1 -> {System.out.println("nivel 1");
+            case 1 -> {
+                System.out.println("nivel 1");
 
             }
             case 2 -> {
-                System.out.println("nivel 2");
+               System.out.println("nivel 2");
 
             }
             case 3 -> System.out.println("nivel 3");
@@ -302,9 +304,13 @@ public class Model
 
     }
 
-    public void guardaPartidaAlSalir()
+    public void guardaPartidaConstante()
     {
-        miUsuario.getNivelDelJugador();
+        miUsuario.setNivelDelJugador();
+    }
+
+    public User getMiUsuario() {
+        return miUsuario;
     }
 
 }
