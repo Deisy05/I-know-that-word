@@ -1,3 +1,12 @@
-nino: 5
-rt: 5
-nuevo: 4
+nueve: 0
+ocho: 8
+diez: 0
+uno: 1
+dos: 2
+tres: 3
+cuatro: 4
+cinco: 5
+seis: 6
+siete: 7
+cero: 0
+t: 1

@@ -73,7 +73,6 @@ public class User
         return posicion;
     }
 
-//----------------------->revisar cambios
     /**
      * Method to register a new player in usuariosListados.txt
      */
@@ -98,11 +97,23 @@ public class User
      * Method to update and rewrite the current level in usuariosListados.txt file
      * @return int - the new level of the user
      */
+//    public int setNivelDelJugador()
+//    {
+//        if(getNivelDelJugador()<10){
+//            fileManager.actualizarNivel(buscarJugador(),getNivelDelJugador()+1);
+//        }
+//        else{
+//            fileManager.actualizarNivel(buscarJugador(),0);
+//        }
+//        return getNivelDelJugador();
+//    }
+
     public int setNivelDelJugador()
     {
         if(getNivelDelJugador()<10){
             fileManager.actualizarNivel(buscarJugador(),getNivelDelJugador()+1);
-        }else{
+        }
+        else{
             fileManager.actualizarNivel(buscarJugador(),0);
         }
         return getNivelDelJugador();
@@ -117,6 +128,9 @@ public class User
         return userName;
     }
 
-
+    public void guardarPartidaConstante(){
+        System.out.println("guarda partida en txt");
+        fileManager.actualizarNivel(buscarJugador(),getNivelDelJugador());
+    }
 
 }

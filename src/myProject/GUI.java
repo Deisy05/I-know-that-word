@@ -207,7 +207,7 @@ public class GUI extends JFrame {
         this.add(panelGame, constraints);
 
         intro = new JTextArea("   ¡HOLA " + nombreJugador.toUpperCase() + "!\n" +
-                "   Estas en el nivel " + model.getNivelActual() + "\n   Presiona PLAY para iniciar");
+                "   Estás en el nivel " + model.getNivelActual() + "\n   Presiona PLAY para iniciar");
         intro.setEditable(false);
         intro.setLineWrap(true);
         intro.setWrapStyleWord(true);
@@ -475,15 +475,11 @@ public class GUI extends JFrame {
                 if (entradaUsuario.getText().isEmpty()) {
                     System.exit(0);
                 } else if (!model.validarEntradaTexto(entradaUsuario.getText())) {
-//                    if(/*no aparece registrado*/){
-//                        JOptionPane.showMessageDialog(null, "No se permite guardar partida, usuario NO registrado");
-//                     }
                     JOptionPane.showMessageDialog(null, "No se permite guardar partida, usuario NO válido");
                 } else {
-                    //model.guardaPartidaAlSalir();
+                    //model.guardaPartidaConstante();
                     System.exit(0);
                 }
-                // if()
 
             }
             if (e.getSource() == botonHelp) {

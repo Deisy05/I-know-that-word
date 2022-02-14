@@ -94,7 +94,12 @@ public class Model
         if (nivelesAprobados<8)
         {
             nivelActual = nivelesAprobados + 1;
-        }else
+        }
+//        if (nivelesAprobados>=8 && nivelesAprobados<=10)
+//        {
+//            nivelActual = 8;
+//        }
+        else
         {
             nivelActual = nivelesAprobados;
         }
@@ -108,7 +113,7 @@ public class Model
     private void setNivelActual()
     {
         aciertos=0;
-        if(getApruebaNivel()){
+        if(getApruebaNivel() & nivelesAprobados<10){
             nivelActual++;
         }
         asignarCantidadPalabrasPorNivel();
@@ -116,6 +121,15 @@ public class Model
         arraListPalabrasCorrectas = diccionario.generarPalabrasCorrectas(cantPalabrasDelNivel/2);
         arraListPalabrasIncorrectas = diccionario.generarPalabrasIncorrectas(cantPalabrasDelNivel/2);
         generarArrayDePalabrasAleatoriaDelNivel();
+
+//        if(getApruebaNivel() & nivelActual ==10){
+//            nivelActual = 0;
+//            asignarCantidadPalabrasPorNivel();
+//            asignarPorcentajesPorNivel();
+//            arraListPalabrasCorrectas = diccionario.generarPalabrasCorrectas(cantPalabrasDelNivel/2);
+//            arraListPalabrasIncorrectas = diccionario.generarPalabrasIncorrectas(cantPalabrasDelNivel/2);
+//            generarArrayDePalabrasAleatoriaDelNivel();
+//        }
     }
 
     private void asignarCantidadPalabrasPorNivel()
@@ -132,16 +146,16 @@ public class Model
 //            case 9-> cantPalabrasDelNivel =140;
 //            case 10-> cantPalabrasDelNivel =200;
 
-            case 1-> cantPalabrasDelNivel =2;
-            case 2-> cantPalabrasDelNivel =2;
-            case 3-> cantPalabrasDelNivel =2;
-            case 4-> cantPalabrasDelNivel =2;
-            case 5-> cantPalabrasDelNivel =2;
-            case 6-> cantPalabrasDelNivel =2;
-            case 7-> cantPalabrasDelNivel =2;
-            case 8-> cantPalabrasDelNivel =2;
-            case 9-> cantPalabrasDelNivel =2;
-            case 10-> cantPalabrasDelNivel =2;
+            case 1-> cantPalabrasDelNivel = 2;
+            case 2-> cantPalabrasDelNivel = 2;
+            case 3-> cantPalabrasDelNivel = 2;
+            case 4-> cantPalabrasDelNivel = 2;
+            case 5-> cantPalabrasDelNivel = 2;
+            case 6-> cantPalabrasDelNivel = 2;
+            case 7-> cantPalabrasDelNivel = 2;
+            case 8-> cantPalabrasDelNivel = 2;
+            case 9-> cantPalabrasDelNivel = 2;
+            case 10-> cantPalabrasDelNivel = 2;
         }
     }
 
@@ -243,7 +257,7 @@ public class Model
     public void setNivelesAprobados(){
         borrarArreglosDePalabras();
         if(aciertos >= cantPalabrasDelNivel*porcentajeAciertos){
-            nivelesAprobados= miUsuario.setNivelDelJugador();
+            nivelesAprobados = miUsuario.setNivelDelJugador();
             flagNivel=true;
             setNivelActual();
             flagPalabrasCorrectas=0;
@@ -273,7 +287,7 @@ public class Model
 
             }
             case 2 -> {
-               System.out.println("nivel 2");
+                System.out.println("nivel 2");
 
             }
             case 3 -> System.out.println("nivel 3");
