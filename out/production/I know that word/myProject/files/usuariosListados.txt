@@ -1,1 +1,3 @@
-deisy: 1
+nino: 5
+rt: 5
+nuevo: 3

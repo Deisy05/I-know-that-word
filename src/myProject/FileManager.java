@@ -1,39 +1,39 @@
 package myProject;
 
 import java.io.*;
-import java.nio.file.attribute.FileStoreAttributeView;
 import java.util.ArrayList;
 import java.util.Objects;
 
 /**
+ * This class allows to manipulate .txt files to be read or to write to them
  * @author Deisy Catalina Melo - deisy.melo@correounivalle.edu.co
  *         Carlos Andrés Borja - borja.carlos@correounivalle.edu.co
- * @version @version v.1.0.0 date: 02/02/2022
+ * @version v.1.2.0 date: 12/02/2022
  */
 public class FileManager
 {
     private FileReader fileReader;
-    private BufferedReader input;//para hacer lectura
+    private BufferedReader input;  // it allows to read the text of an input stream
     private FileWriter fileWriter;
-    private BufferedWriter output;//para escribir
-    public static final String bancoDePalabras = "src/myProject/files/bancoDePalabras.txt"; //dirección constante
-    public static final String usuariosListados = "src/myProject/files/usuariosListados.txt";//dirección constante
+    private BufferedWriter output; // it allows to writes text to a character-output stream
+    public static final String bancoDePalabras = "src/myProject/files/bancoDePalabras.txt";   //constant location
+    public static final String usuariosListados = "src/myProject/files/usuariosListados.txt"; //constant location
+
 
     /**
-     * Este método lee el archivo 'bancoDePalabras.txt' y retorna el arrayList con cada palabra del archivo
-     *
-     * @return ArrayList lecturaWordFile
+     * This method reads a .txt file and returns the arrayList with each word of the file
+     * @param _file
+     * @return ArrayList
      */
-
     public ArrayList<String> leerArchivos(String _file)
     {
 
         ArrayList<String> texto = new ArrayList<>();
 
         String elArchivoLeido = "";
-        if (Objects.equals(_file, "miListaDePalabras")) {
+        if (Objects.equals(_file, "miListaDePalabras")){
             elArchivoLeido = bancoDePalabras;
-        } else if (Objects.equals(_file, "miListaDeUsuarios")) {
+        } else if (Objects.equals(_file, "miListaDeUsuarios")){
             elArchivoLeido = usuariosListados;
         }
 
@@ -41,16 +41,18 @@ public class FileManager
             fileReader = new FileReader(elArchivoLeido);
             input = new BufferedReader(fileReader);
             String line = input.readLine();
-            while (line != null) {
+            while (line != null)
+            {
                 texto.add(line);
                 line = input.readLine();
             }
-        } catch (FileNotFoundException e) {
+        }catch (FileNotFoundException e){
             e.printStackTrace();
-        } catch (IOException e) {
+        } catch (IOException e){
             e.printStackTrace();
-        } finally {
-            try {
+        }finally
+        {
+            try{
                 input.close();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -60,11 +62,9 @@ public class FileManager
     }
 
     /**
-     * Este método escribe en el archivo 'bancoDePalabras.txt' cada dato del usuario
-     *
-     * @return ArrayList lecturaWordFile
+     * This method allows writing to the usuariosListados.txt file
+     * @param linea
      */
-
     public void escribirTexto(String linea)
     {
         try {
@@ -84,11 +84,10 @@ public class FileManager
     }
 
     /**
-     * Actualiza los datos del jugador
+     * This method allows writing to the usuariosListados.txt file in order to update the level
      * @param posicion
      * @param nivelNuevo
      */
-
     public void actualizarNivel(int posicion, int nivelNuevo)
     {
         try {
@@ -99,7 +98,8 @@ public class FileManager
             usuariosActualizados.add(posicion, usuarioActualizado);
             fileWriter = new FileWriter(usuariosListados, false);
             output = new BufferedWriter(fileWriter);
-            for (String usuariosActualizado : usuariosActualizados) {
+            for (String usuariosActualizado : usuariosActualizados)
+            {
                 output.write(usuariosActualizado);
                 output.newLine();
 
