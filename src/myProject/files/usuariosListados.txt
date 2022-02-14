@@ -1,3 +1,2 @@
-nino: 5
-rt: 5
-nuevo: 4
+cat: 10
+dei: 3

@@ -14,7 +14,7 @@ public class User
 {
     private FileManager fileManager;
     private ArrayList<String> listaDeJugadores;
-    private int nivel;
+    private int posicion;
     private String userName;
     private boolean existeUsuario;
 
@@ -30,6 +30,7 @@ public class User
         listaDeJugadores = fileManager.leerArchivos("miListaDeUsuarios");
         userName = playerName;
         existeUsuario = false;
+        buscarJugador();
 
     }
 
@@ -49,18 +50,18 @@ public class User
      */
     public boolean determinarExistenciaJugador()
     {
-        if (buscarJugador()!=-1)
+        if (posicion!=-1)
             existeUsuario = true;
         return existeUsuario;
     }
 
     /**
      * Method to see if a player is registered and return his index
-     * @return posicion
+     * inicializa la variable posicion del jugador
      */
-    private int buscarJugador()
+    private void buscarJugador()
     {
-        int posicion = -1;
+       posicion = -1;
         for (int i = 0; i < listaDeJugadores.size() && !Objects.equals(listaDeJugadores.get(i), " "); i++) {
             String auxJugador = listaDeJugadores.get(i).substring(0, listaDeJugadores.get(i).lastIndexOf(":"));
             if (auxJugador.equals(userName)){
@@ -70,7 +71,6 @@ public class User
             }
 
         }
-        return posicion;
     }
 
 //----------------------->revisar cambios
@@ -81,6 +81,7 @@ public class User
     {
         fileManager.escribirTexto(userName + ": " + 0);
         listaDeJugadores.add(userName+ ": "+ 0);
+        posicion= listaDeJugadores.size()-1;
     }
 
     /**
@@ -89,24 +90,23 @@ public class User
      */
     public int getNivelDelJugador()
     {
-        String usuario= listaDeJugadores.get(buscarJugador());
+        String usuario= listaDeJugadores.get(posicion);
         String nivelesEnString=usuario.substring(usuario.lastIndexOf(":")+2);
         return Integer.parseInt(nivelesEnString);
     }
 
     /**
      * Method to update and rewrite the current level in usuariosListados.txt file
-     * @return int - the new level of the user
+     *
      */
-    public int setNivelDelJugador()
+    public void setNivelDelJugador(int nivel)
     {
-        if(getNivelDelJugador()<10){
-            fileManager.actualizarNivel(buscarJugador(),getNivelDelJugador()+1);
-        }else{
-            fileManager.actualizarNivel(buscarJugador(),0);
-        }
-        return getNivelDelJugador();
+            listaDeJugadores.remove(posicion);
+            listaDeJugadores.add(userName+": "+ nivel);
+
+            fileManager.actualizarNivel(posicion,getNivelDelJugador());
     }
+
 
     /**
      * Getter method for the user name
