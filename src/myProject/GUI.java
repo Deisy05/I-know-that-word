@@ -28,13 +28,13 @@ public class GUI extends JFrame {
             "excepto si tu ultimo nivel aprobado es mayor o igual al  8, en este caso siempre iniciaras en \n el " +
             "mismo nivel ";
 
-    private JPanel panelInicio, panelGame, panelBotones, panelPalabras, panelOpciones, panelMensaje;
+    private JPanel panelInicio, panelGame, panelBotones, panelPalabras, panelOpciones;
     private JTextField entradaUsuario;
     private JTextArea intro;
     private JButton botonOK, botonHelp, botonExit, botonIniciar, botonInstrucciones, botonSI, botonNO, botonContinuar, botonRepetirSI, botonRepetirNO;
     private JLabel labelUsername, labelInstrucciones, labelNivel, labelTiempo, labelPalabra;
     private ImageIcon image;
-    private boolean opcionHelp, repetir;
+    private boolean opcionHelp;
     private String nombreJugador;
     private int fase, counter;
     private Timer timer;
@@ -43,7 +43,8 @@ public class GUI extends JFrame {
     /**
      * Constructor of GUI class
      */
-    public GUI() {
+    public GUI()
+    {
         this.setContentPane(new Canvas(1)); // to Paint the background image of the Frame
         initGUI();
         // Default JFrame configuration
@@ -58,7 +59,8 @@ public class GUI extends JFrame {
      * This method is used to set up the default JComponent Configuration,
      * create Listener and control Objects used for the GUI class
      */
-    private void initGUI() {
+    private void initGUI()
+    {
 
         // Set up JFrame Container's Layout
         this.setLayout(new GridBagLayout());
@@ -130,7 +132,8 @@ public class GUI extends JFrame {
      * 2) JTextField entradaUsuario: component for text input
      * 3) JButton botonOk: confirmation button after entering username
      */
-    public void componentesDelPanelInicio() {
+    public void componentesDelPanelInicio()
+    {
         // Layout component
         GridBagConstraints layoutPanelInicio = new GridBagConstraints();
         // Label for user
@@ -194,7 +197,8 @@ public class GUI extends JFrame {
      * 2) JTextArea intro: start message
      * 3) Invokes the method to add the instructions and play buttons
      */
-    public void crearPanelGame() {
+    public void crearPanelGame()
+    {
         panelGame = new Canvas(2); // Create the panel with the image
         panelGame.setLayout(new GridBagLayout()); // Set up JPanel Container's Layout
         layoutPanelGame = new GridBagConstraints(); // panelGame layout component
@@ -232,7 +236,8 @@ public class GUI extends JFrame {
      * 1) Instruction Button
      * 2) Start Game Button
      */
-    public void crearPanelBotonesInicio() {
+    public void crearPanelBotonesInicio()
+    {
 
         panelBotones = new JPanel();
         panelBotones.setPreferredSize(new Dimension(900, 100));
@@ -269,7 +274,8 @@ public class GUI extends JFrame {
      * 2) Level label
      * 2) Tag words to be memorized
      */
-    public void crearComponentesPanelGame() {
+    public void crearComponentesPanelGame()
+    {
 
         labelNivel = new JLabel("NIVEL: " + Integer.toString(model.getNivelActual()));
         labelNivel.setFont(new Font("Impact", Font.PLAIN, 24));
@@ -319,7 +325,8 @@ public class GUI extends JFrame {
      * 1) JLabel informative message
      * 2) JButton continue: try to complete the required hits
      */
-    public void inicioFase2() {
+    public void inicioFase2()
+    {
         intro.setText("\n               ¡Es hora de la verdad! \n   Demuestra cuánto has logrado\n   " +
                 "memorizar ");
         intro.setBackground(new Color(0, 0, 0, 150));
@@ -390,17 +397,20 @@ public class GUI extends JFrame {
     /**
      * This method creates the necessary components to continue another level
      */
-    public void continuarNivel() {
+    public void continuarNivel()
+    {
         String textoFinal = "";
         int aciertos = model.getAciertos();
         int porcentaje = model.porcentajeAciertos();
 
 
         if (model.getApruebaNivel() && model.getNivelActual() < 10) {
+
             textoFinal = "\n               Has superado el nivel. \n   Número de aciertos: " + aciertos +
                     "\n   porcentaje: " + porcentaje + "%";
         }
         if (model.getApruebaNivel() && model.getNivelActual() == 10) {
+            model.setNivelesAprobados(false);
             textoFinal = "\n   GANASTE!  Has superado el nivel. \n   Número de aciertos: " + aciertos +
                     "\n   porcentaje: " + porcentaje + "%" + "\n   ¿Deseas empezar desde nivel 1?";
             crearComponentesRepetir();
@@ -422,7 +432,7 @@ public class GUI extends JFrame {
         layoutPanelGame.fill = GridBagConstraints.NONE;
         layoutPanelGame.anchor = GridBagConstraints.CENTER;
         panelGame.add(intro, layoutPanelGame);
-        System.out.println(textoFinal);//---------------------------------------------PRUEBA EN CONSOLA
+        System.out.println(textoFinal); //---------------------------------------------PRUEBA EN CONSOLA
         revalidate();
         repaint();
 
@@ -432,7 +442,8 @@ public class GUI extends JFrame {
      * Method to create the components to indicate if you want to start from level 1 or start from the current level
      * These components are only created when passing level 10
      */
-    public void crearComponentesRepetir() {
+    public void crearComponentesRepetir()
+    {
         panelOpciones = new JPanel();
         panelOpciones.setPreferredSize(new Dimension(690, 70));
         panelOpciones.setOpaque(false);
@@ -469,7 +480,8 @@ public class GUI extends JFrame {
      * 1) to display the words to memorize on the screen
      * 2) to start timer
      */
-    public void iniciarNivel() {
+    public void iniciarNivel()
+    {
         panelGame.removeAll();
         crearComponentesPanelGame();
         labelPalabra.setText(model.getPalabrasMemorizar());
@@ -502,17 +514,22 @@ public class GUI extends JFrame {
     private class Escucha implements ActionListener {
 
         @Override
-        public void actionPerformed(ActionEvent e) {
-            if (e.getSource() == timer) {
+        public void actionPerformed(ActionEvent e)
+        {
+            if (e.getSource() == timer)
+            {
                 labelTiempo.setText("00:0" + counter);
                 counter++;
 
-                if (fase == 1) {
-                    if (counter > 5) {
+                if (fase == 1)
+                {
+                    if (counter > 5)
+                    {
                         labelPalabra.setText(model.getPalabrasMemorizar());
                         counter = 1;
                     }
-                    if (Objects.equals(labelPalabra.getText(), "")) {
+                    if (Objects.equals(labelPalabra.getText(), ""))
+                    {
                         timer.stop();
                         panelGame.removeAll();
                         revalidate();
@@ -520,12 +537,15 @@ public class GUI extends JFrame {
                         inicioFase2();
                     }
                 }
-                if (fase == 2) {
-                    if (counter > 7) {
+                if (fase == 2)
+                {
+                    if (counter > 7)
+                    {
                         labelPalabra.setText(model.getPalabrasAleatorias());
                         counter = 1;
                     }
-                    if (Objects.equals(labelPalabra.getText(), "")) {
+                    if (Objects.equals(labelPalabra.getText(), ""))
+                    {
                         timer.stop();
                         panelGame.removeAll();
                         revalidate();
@@ -536,31 +556,36 @@ public class GUI extends JFrame {
 
             }
 
-            if (e.getSource() == botonExit) {
+            if (e.getSource() == botonExit)
+            {
 
-                if (entradaUsuario.getText().isEmpty()) {
-                    System.exit(0);
-                } else if (!model.validarEntradaTexto(entradaUsuario.getText())) {
-                    JOptionPane.showMessageDialog(null, "No se permite guardar partida, usuario NO válido");
-                } else {
+                if (entradaUsuario.getText().isEmpty())
+                {
                     System.exit(0);
                 }
-
+                else if (!model.validarEntradaTexto(entradaUsuario.getText())) {
+                    JOptionPane.showMessageDialog(null, "No se permite guardar partida, usuario NO válido");
+                }
+                else
+                    System.exit(0);
 
             }
 
-            if (e.getSource() == botonHelp) {
-                if (!opcionHelp) {
+            if (e.getSource() == botonHelp)
+            {
+                if (!opcionHelp)
                     JOptionPane.showMessageDialog(null, INFO1, "USERNAME", JOptionPane.PLAIN_MESSAGE, iconoMessage(
                             "/myProject/recursos/imageUser.png", 50, 50));
-                } else {
+                else
                     JOptionPane.showMessageDialog(null, INFO2, null, JOptionPane.INFORMATION_MESSAGE);
-                }
+
             }
 
-            if (e.getSource() == botonOK) {
+            if (e.getSource() == botonOK)
+            {
 
-                if (!entradaUsuario.getText().isEmpty()) {
+                if (!entradaUsuario.getText().isEmpty())
+                {
                     nombreJugador = entradaUsuario.getText();
 
                     // We validate that it does not have special characters
@@ -576,13 +601,14 @@ public class GUI extends JFrame {
                     } else
                         JOptionPane.showMessageDialog(null, "No se aceptan caracteres especiales ni espacios");
 
-                } else {
+                } else
                     JOptionPane.showMessageDialog(null, "Debes ingresar el nombre de usuario", "Username is required",
                             JOptionPane.ERROR_MESSAGE);
-                }
+
             }
 
-            if (e.getSource() == botonInstrucciones) {
+            if (e.getSource() == botonInstrucciones)
+            {
                 labelInstrucciones = new JLabel();
                 image = new ImageIcon(
                         Objects.requireNonNull(getClass().getResource("/myProject/recursos/instrucciones.png")));
@@ -592,11 +618,11 @@ public class GUI extends JFrame {
 
             }
 
-            if (e.getSource() == botonIniciar) {
+            if (e.getSource() == botonIniciar)
                 iniciarNivel();
-            }
 
-            if (e.getSource() == botonSI) {
+            if (e.getSource() == botonSI)
+            {
                 model.validarPalabraCorrecta(labelPalabra.getText());
                 labelPalabra.setText(model.getPalabrasAleatorias());
                 counter = 1;
@@ -604,7 +630,8 @@ public class GUI extends JFrame {
                 repaint();
             }
 
-            if (e.getSource() == botonNO) {
+            if (e.getSource() == botonNO)
+            {
                 model.validarPalabraIncorrecta(labelPalabra.getText());
                 labelPalabra.setText(model.getPalabrasAleatorias());
                 counter = 1;
@@ -612,7 +639,8 @@ public class GUI extends JFrame {
                 repaint();
             }
 
-            if (e.getSource() == botonContinuar) {
+            if (e.getSource() == botonContinuar)
+            {
                 panelGame.remove(intro);
                 panelGame.remove(botonContinuar);
                 fase = 2;
@@ -625,13 +653,14 @@ public class GUI extends JFrame {
                 timer.start();
             }
 
-            if (e.getSource() == botonRepetirSI) {
+            if (e.getSource() == botonRepetirSI)
+            {
                 model.setNivelesAprobados(true);
                 iniciarNivel();
             }
 
-            if (e.getSource() == botonRepetirNO) {
-                model.setNivelesAprobados(false);
+            if (e.getSource() == botonRepetirNO)
+            {
                 iniciarNivel();
             }
 

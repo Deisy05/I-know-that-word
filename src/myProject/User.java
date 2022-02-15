@@ -98,9 +98,7 @@ public class User
      */
     public void setNivelDelJugador(int nivel)
     {
-        listaDeJugadores.remove(posicion);
-        listaDeJugadores.add(userName+": "+ nivel);
-        fileManager.actualizarNivel(posicion,getNivelDelJugador());
+         fileManager.actualizarNivel(posicion, nivel);
     }
 
     /**

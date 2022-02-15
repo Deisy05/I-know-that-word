@@ -6,7 +6,9 @@ cuatro: 4
 cinco: 5
 seis: 6
 siete: 7
-ocho: 8
+ocho: 0
 nueve: 9
 diez: 10
 nuevo: 0
+op: 0
+uo: 0

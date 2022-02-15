@@ -76,7 +76,7 @@ public class Model
 
         flagPalabrasCorrectas = 0;
         flagNivel = false;
-        if (nivelesAprobados<8)
+        if (nivelesAprobados<10)
         {
             nivelActual = nivelesAprobados + 1;
         }else
@@ -270,20 +270,20 @@ public class Model
     public void setNivelesAprobados(boolean repetir){
         borrarArreglosDePalabras();
         if(repetir && (nivelActual == 10)){
-            nivelActual=1;
+            nivelActual = 1;
             miUsuario.setNivelDelJugador(0);
             flagNivel= false;
         }
-        //else if(repetir && (nivelActual == 10)){ flagNivel=false;}
-        else if(!repetir && nivelActual==10){
+        else if(!repetir && nivelActual == 10){
             flagNivel=false;
             miUsuario.setNivelDelJugador(nivelActual);
-        }else {
+        }else if(flagNivel)
+        {
             miUsuario.setNivelDelJugador(nivelActual);
         }
 
         setNivelActual();
-        flagPalabrasCorrectas=0;
+        flagPalabrasCorrectas = 0;
 
     }
 
