@@ -1,0 +1,16 @@
+cero: 0
+uno: 1
+dos: 2
+tres: 3
+cuatro: 4
+cinco: 5
+seis: 6
+siete: 7
+ocho: 0
+nueve: 9
+diez: 10
+hola: 0
+ui: 0
+juan: 4
+epa: 10
+luis: 2

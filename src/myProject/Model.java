@@ -7,7 +7,7 @@ import java.util.Random;
  * This class is designed in order to applies the game rules
  * @author Deisy Catalina Melo - deisy.melo@correounivalle.edu.co
  *         Carlos Andrés Borja - borja.carlos@correounivalle.edu.co
- * @version v.1.1.1 date: 14/02/2022
+ * @version v.1.1.2 date: 15/02/2022
  */
 public class Model
 {
@@ -111,20 +111,23 @@ public class Model
      */
     private void asignarCantidadPalabrasPorNivel()
     {
-//        switch (nivelActual){
-//            case 1-> cantPalabrasDelNivel =20;
-//            case 2-> cantPalabrasDelNivel =40;
-//            case 3-> cantPalabrasDelNivel =50;
-//            case 4-> cantPalabrasDelNivel =60;
-//            case 5-> cantPalabrasDelNivel =70;
-//            case 6-> cantPalabrasDelNivel =80;
-//            case 7-> cantPalabrasDelNivel =100;
-//            case 8-> cantPalabrasDelNivel =120;
-//            case 9-> cantPalabrasDelNivel =140;
-//            case 10-> cantPalabrasDelNivel =200;
+        switch (nivelActual){
+            case 1-> cantPalabrasDelNivel =20;
+            case 2-> cantPalabrasDelNivel =40;
+            case 3-> cantPalabrasDelNivel =50;
+            case 4-> cantPalabrasDelNivel =60;
+            case 5-> cantPalabrasDelNivel =70;
+            case 6-> cantPalabrasDelNivel =80;
+            case 7-> cantPalabrasDelNivel =100;
+            case 8-> cantPalabrasDelNivel =120;
+            case 9-> cantPalabrasDelNivel =140;
+            case 10-> cantPalabrasDelNivel =200;
 
-//        }
-        cantPalabrasDelNivel=2;
+        }
+
+        //in case of doing fast tests by console
+        //cantPalabrasDelNivel =2;
+
     }
 
     /**
@@ -247,8 +250,6 @@ public class Model
         return errores;
     }
 
-
-
     /**
      * This method returns the percentage that represents the number of hits
      * @return int
@@ -313,34 +314,22 @@ public class Model
         arrayDePalabrasAleatorias.clear();
     }
 
-
-    public void hacerPruebasPorConsola()
-    {
-
-        switch (nivelActual) {
-            case 1 -> System.out.println("nivel 1");
-            case 2 -> System.out.println("nivel 2");
-            case 3 -> System.out.println("nivel 3");
-            case 4 -> System.out.println("nivel 4");
-            case 5 -> System.out.println("nivel 5");
-            case 6 -> System.out.println("nivel 6");
-            case 7 -> System.out.println("nivel 7");
-            case 8 -> System.out.println("nivel 8");
-            case 9 -> System.out.println("nivel 9");
-            case 10 -> System.out.println("nivel 10");
-        }
-
-
-        System.out.println("**Correctas**");
-        for (String elementoC : arraListPalabrasCorrectas) {
-            System.out.print(elementoC + " ");
-        }
-        System.out.println("\n**Incorrectas**");
-        for (String elementoI : arraListPalabrasIncorrectas) {
-            System.out.print(elementoI + " ");
-        }
-
-        System.out.println("\nPalabras aleatorias: "+arrayDePalabrasAleatorias.size());
-
-    }
+    /*
+     * In case of doing fast tests by console
+     */
+//    public void hacerPruebasPorConsola()
+//    {
+//
+//        System.out.println("**Correctas**");
+//        for (String elementoC : arraListPalabrasCorrectas) {
+//            System.out.print(elementoC + " ");
+//        }
+//        System.out.println("\n**Incorrectas**");
+//        for (String elementoI : arraListPalabrasIncorrectas) {
+//            System.out.print(elementoI + " ");
+//        }
+//
+//        System.out.println("\nPalabras aleatorias: "+arrayDePalabrasAleatorias.size());
+//
+//    }
 }

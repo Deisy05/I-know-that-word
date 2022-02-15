@@ -1,6 +1,7 @@
 package myProject;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -8,7 +9,7 @@ import java.util.Objects;
  * This class allows to manipulate .txt files to be read or to write to them
  * @author Deisy Catalina Melo - deisy.melo@correounivalle.edu.co
  *         Carlos Andrés Borja - borja.carlos@correounivalle.edu.co
- * @version v.1.2.0 date: 12/02/2022
+ * @version v.1.2.1 date: 15/02/2022
  */
 public class FileManager
 {
@@ -18,7 +19,6 @@ public class FileManager
     private BufferedWriter output; // it allows to writes text to a character-output stream
     public static final String bancoDePalabras = "src/myProject/files/bancoDePalabras.txt";   //constant location
     public static final String usuariosListados = "src/myProject/files/usuariosListados.txt"; //constant location
-
 
     /**
      * This method reads a .txt file and returns the arrayList with each word of the file
@@ -38,7 +38,8 @@ public class FileManager
 
         try
         {
-            fileReader = new FileReader(elArchivoLeido);
+            //To allows reading of UTF-8. Unicode and ISO 10646 character encoding format
+            fileReader = new FileReader(elArchivoLeido, StandardCharsets.UTF_8);
             input = new BufferedReader(fileReader);
             String line = input.readLine();
             while (line != null)

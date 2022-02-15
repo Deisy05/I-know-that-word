@@ -11,7 +11,7 @@ import java.util.Objects;
  *
  * @author Deisy Catalina Melo - deisy.melo@correounivalle.edu.co
  *         Carlos Andrés Borja - borja.carlos@correounivalle.edu.co
- * @version v.1.0.4 date: 14/02/2022
+ * @version v.1.0.5 date: 15/02/2022
  */
 public class GUI extends JFrame {
 
@@ -438,6 +438,7 @@ public class GUI extends JFrame {
             model.setNivelesAprobados(false);
             botonIniciar.setVisible(true);
         }
+        intro.setPreferredSize(new Dimension(400, 250));
 
         intro.setText(textoFinal);
         layoutPanelGame.gridx = 0;
@@ -498,7 +499,7 @@ public class GUI extends JFrame {
         panelGame.removeAll();
         crearComponentesPanelGame();
         labelPalabra.setText(model.getPalabrasMemorizar());
-        model.hacerPruebasPorConsola();//solo por consola muestra pruebas
+        //model.hacerPruebasPorConsola();//in case of doing fast tests by console
         botonIniciar.setVisible(false);
         fase = 1;
         counter = 1;
@@ -620,7 +621,7 @@ public class GUI extends JFrame {
                             JOptionPane.ERROR_MESSAGE);
 
             }
-
+//
             if (e.getSource() == botonInstrucciones)
             {
                 labelInstrucciones = new JLabel();

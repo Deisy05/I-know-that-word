@@ -2,13 +2,12 @@ package myProject;
 
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Random;
 
 /**
  * This class is created in order to manipulate the user, his name and level
  * @author Deisy Catalina Melo - deisy.melo@correounivalle.edu.co
  *         Carlos Andrés Borja - borja.carlos@correounivalle.edu.co
- * @version @version v.1.0.3 date: 14/02/2022
+ * @version @version v.1.0.4 date: 15/02/2022
  */
 public class User
 {
