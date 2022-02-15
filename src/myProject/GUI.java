@@ -515,7 +515,8 @@ public class GUI extends JFrame {
      * @param args Object used in order to send input data from command line when
      *             the program is executed by console.
      */
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         EventQueue.invokeLater(() -> {
             GUI miProjectGUI = new GUI();
         });
@@ -621,7 +622,7 @@ public class GUI extends JFrame {
                             JOptionPane.ERROR_MESSAGE);
 
             }
-//
+
             if (e.getSource() == botonInstrucciones)
             {
                 labelInstrucciones = new JLabel();
