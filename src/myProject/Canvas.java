@@ -32,7 +32,8 @@ public class Canvas  extends JPanel
     public void paintComponent(Graphics g)
     {
 
-        switch (step) {
+        switch (step)
+        {
             case 1 ->
                     {
                         imagenFrame = new ImageIcon(Objects.requireNonNull(getClass().getResource("/myProject/recursos/inicio.jpg")));

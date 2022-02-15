@@ -37,7 +37,8 @@ public class FileManager
             elArchivoLeido = usuariosListados;
         }
 
-        try {
+        try
+        {
             fileReader = new FileReader(elArchivoLeido);
             input = new BufferedReader(fileReader);
             String line = input.readLine();
@@ -50,9 +51,11 @@ public class FileManager
             e.printStackTrace();
         } catch (IOException e){
             e.printStackTrace();
-        }finally
+        }
+        finally
         {
-            try{
+            try
+            {
                 input.close();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -75,9 +78,11 @@ public class FileManager
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            try {
+            try
+            {
                 output.close();
-            } catch (IOException e) {
+            } catch (IOException e)
+            {
                 e.printStackTrace();
             }
         }
@@ -105,7 +110,8 @@ public class FileManager
 
             }
             output.close();
-        }catch (IOException e)
+        }
+        catch (IOException e)
         {
             e.printStackTrace();
         }
