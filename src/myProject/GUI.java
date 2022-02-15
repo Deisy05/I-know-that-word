@@ -266,6 +266,7 @@ public class GUI extends JFrame {
         botonIniciar.setBorderPainted(false);
         botonIniciar.setContentAreaFilled(false);
         panelBotones.add(botonIniciar);
+
     }
 
     /**
@@ -327,11 +328,14 @@ public class GUI extends JFrame {
      */
     public void inicioFase2()
     {
+        revalidate();
+        repaint();
         intro.setText("\n               ¡Es hora de la verdad! \n   Demuestra cuánto has logrado\n   " +
-                "memorizar ");
+                "memorizar\n");
         intro.setBackground(new Color(0, 0, 0, 150));
         intro.setPreferredSize(new Dimension(400, 200));
         intro.setForeground(Color.WHITE);
+        intro.setOpaque(true);
         layoutPanelGame.gridx = 0;
         layoutPanelGame.gridy = 0;
         layoutPanelGame.gridwidth = 1;
@@ -362,7 +366,8 @@ public class GUI extends JFrame {
      * 1) JButton option YES
      * 2) JButton option NO
      */
-    public void crearComponentesFase2() {
+    public void crearComponentesFase2()
+    {
         panelOpciones = new JPanel();
         panelOpciones.setPreferredSize(new Dimension(690, 87));
         panelOpciones.setOpaque(false);
@@ -402,25 +407,34 @@ public class GUI extends JFrame {
         String textoFinal = "";
         int aciertos = model.getAciertos();
         int porcentaje = model.porcentajeAciertos();
+        int errores = model.getErrores();
 
 
-        if (model.getApruebaNivel() && model.getNivelActual() < 10) {
-
-            textoFinal = "\n               Has superado el nivel. \n   Número de aciertos: " + aciertos +
-                    "\n   porcentaje: " + porcentaje + "%";
+        if (model.getApruebaNivel() && model.getNivelActual() < 10)
+        {
+            textoFinal = "\n               Has superado el nivel. " +
+                    "\n Aciertos: " + aciertos +
+                    "\n Errores: "+ errores +
+                    "\n Porcentaje: " + porcentaje + "%\n";
         }
-        if (model.getApruebaNivel() && model.getNivelActual() == 10) {
+        if (model.getApruebaNivel() && model.getNivelActual() == 10)
+        {
             model.setNivelesAprobados(false);
-            textoFinal = "\n   GANASTE!  Has superado el nivel. \n   Número de aciertos: " + aciertos +
-                    "\n   porcentaje: " + porcentaje + "%" + "\n   ¿Deseas empezar desde nivel 1?";
+            textoFinal = "\n   GANASTE!  Has superado el nivel. " +
+                    "\n Aciertos: " + aciertos +
+                    "\n Errores: "+ errores +
+                    "\n Porcentaje: " + porcentaje + "%" + "\n   ¿Deseas empezar desde nivel 1?";
             crearComponentesRepetir();
 
         } else if (!model.getApruebaNivel()) {
-            textoFinal = "\n               No has superado el nivel. \n   Número de aciertos: " + aciertos +
-                    "\n   porcentaje: " + porcentaje + "%";
+            textoFinal = "\n               No has superado el nivel. " +
+                    "\n Aciertos: " + aciertos +
+                    "\n Errores: "+ errores +
+                    "\n Porcentaje: " + porcentaje + "%\n";
         }
 
-        if (model.getNivelActual() < 10) {
+        if (model.getNivelActual() < 10)
+        {
             model.setNivelesAprobados(false);
             botonIniciar.setVisible(true);
         }
@@ -432,7 +446,6 @@ public class GUI extends JFrame {
         layoutPanelGame.fill = GridBagConstraints.NONE;
         layoutPanelGame.anchor = GridBagConstraints.CENTER;
         panelGame.add(intro, layoutPanelGame);
-        System.out.println(textoFinal); //---------------------------------------------PRUEBA EN CONSOLA
         revalidate();
         repaint();
 
@@ -511,7 +524,8 @@ public class GUI extends JFrame {
      * Inner class that extends an Adapter Class or implements Listeners used by GUI
      * class
      */
-    private class Escucha implements ActionListener {
+    private class Escucha implements ActionListener
+    {
 
         @Override
         public void actionPerformed(ActionEvent e)
@@ -660,9 +674,7 @@ public class GUI extends JFrame {
             }
 
             if (e.getSource() == botonRepetirNO)
-            {
                 iniciarNivel();
-            }
 
         }
     }

@@ -16,7 +16,7 @@ public class Model
     private boolean flagNivel;
     private User miUsuario;
     String nombreUsuario;
-    int nivelesAprobados, nivelActual, cantPalabrasDelNivel, aciertos, flagPalabrasCorrectas,flagPalabrasAleatorias;
+    int nivelesAprobados, errores, nivelActual, cantPalabrasDelNivel, aciertos, flagPalabrasCorrectas,flagPalabrasAleatorias;
     double porcentajeAciertos;
     private ArrayList<String> arraListPalabrasCorrectas;
     private ArrayList<String> arraListPalabrasIncorrectas;
@@ -92,7 +92,8 @@ public class Model
      */
     private void setNivelActual()
     {
-        aciertos=0;
+        aciertos = 0;
+        errores = 0;
         if(flagNivel){
             nivelActual++;
             flagNivel=false;
@@ -169,8 +170,10 @@ public class Model
      */
     public void validarPalabraCorrecta(String palabra)
     {
-        for (String elementoListCorrecta : arraListPalabrasCorrectas) {
-            if (elementoListCorrecta.equals(palabra)) {
+        for (String elementoListCorrecta : arraListPalabrasCorrectas)
+        {
+            if (elementoListCorrecta.equals(palabra))
+            {
                 aciertos++;
                 break;
             }
@@ -185,8 +188,10 @@ public class Model
      */
     public void validarPalabraIncorrecta(String palabra)
     {
-        for (String elementoListIncorrecta : arraListPalabrasIncorrectas) {
-            if (elementoListIncorrecta.equals(palabra)) {
+        for (String elementoListIncorrecta : arraListPalabrasIncorrectas)
+        {
+            if (elementoListIncorrecta.equals(palabra))
+            {
                 aciertos++;
                 break;
             }
@@ -232,6 +237,17 @@ public class Model
     {
         return aciertos;
     }
+
+    /**
+     * Getter method of the wrong words number
+     * @return int errores
+     */
+    public int getErrores(){
+        errores = cantPalabrasDelNivel-aciertos;
+        return errores;
+    }
+
+
 
     /**
      * This method returns the percentage that represents the number of hits

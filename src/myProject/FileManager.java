@@ -31,11 +31,10 @@ public class FileManager
         ArrayList<String> texto = new ArrayList<>();
 
         String elArchivoLeido = "";
-        if (Objects.equals(_file, "miListaDePalabras")){
+        if (Objects.equals(_file, "miListaDePalabras"))
             elArchivoLeido = bancoDePalabras;
-        } else if (Objects.equals(_file, "miListaDeUsuarios")){
+        else if (Objects.equals(_file, "miListaDeUsuarios"))
             elArchivoLeido = usuariosListados;
-        }
 
         try
         {
@@ -47,9 +46,12 @@ public class FileManager
                 texto.add(line);
                 line = input.readLine();
             }
-        }catch (FileNotFoundException e){
+        }
+        catch(FileNotFoundException e)
+        {
             e.printStackTrace();
-        } catch (IOException e){
+        } catch(IOException e)
+        {
             e.printStackTrace();
         }
         finally
@@ -70,14 +72,18 @@ public class FileManager
      */
     public void escribirTexto(String linea)
     {
-        try {
+        try
+        {
             fileWriter = new FileWriter(usuariosListados, true);
             output = new BufferedWriter(fileWriter);
             output.write(linea);
             output.newLine();
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             e.printStackTrace();
-        } finally {
+        } finally
+        {
             try
             {
                 output.close();
@@ -95,7 +101,8 @@ public class FileManager
      */
     public void actualizarNivel(int posicion, int nivelNuevo)
     {
-        try {
+        try
+        {
             ArrayList<String> usuariosActualizados = leerArchivos("miListaDeUsuarios");
             String usuarioAntiguo = usuariosActualizados.get(posicion);
             String usuarioActualizado = usuarioAntiguo.substring(0, usuarioAntiguo.lastIndexOf(":") + 2) + nivelNuevo;
